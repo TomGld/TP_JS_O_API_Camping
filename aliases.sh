@@ -31,4 +31,4 @@ alias db-export='sudo docker exec $(docker ps --format '{{.Names}}' | grep maria
 alias db-import='sudo docker exec $(docker ps --format '{{.Names}}' | grep mariadb) /root/restore.sh'
 
 # alias (dangereux) pour supprimer et recréer la bdd
-alias dbresetload='cconsole d:d:d && cconsole d:d:c && cconsole d:m:m && cconsole d:f:l'
+alias dbresetload='cconsole d:d:d --force && cconsole d:d:c && cconsole d:m:m && cconsole d:f:l'
