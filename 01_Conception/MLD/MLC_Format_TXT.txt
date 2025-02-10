@@ -1,0 +1,74 @@
+User (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    date_of_birth DATETIME NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    phone VARCHAR(15) NULL,
+    address VARCHAR(255) NULL
+)
+
+Type_rental (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    label VARCHAR(255) NOT NULL
+)
+
+Rental (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    capacity INT NOT NULL,
+    nbr_localization INT NOT NULL,
+    type_rental_id INT NOT NULL,
+    isActive INT DEFAULT 1,
+    FOREIGN KEY (type_rental_id) REFERENCES Type_rental(id)
+)
+
+Reservation (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    rental_id INT NOT NULL,
+    renter_id INT NOT NULL,
+    date_start DATETIME NOT NULL,
+    date_end DATETIME NOT NULL,
+    nbr_adult INT NOT NULL,
+    nbr_minor INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    checked INT DEFAULT 0,
+    applied_price_id INT NOT NULL,
+    FOREIGN KEY (rental_id) REFERENCES Rental(id),
+    FOREIGN KEY (renter_id) REFERENCES User(id),
+    FOREIGN KEY (applied_price_id) REFERENCES Price(id)
+)
+
+Price (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    rental_id INT NOT NULL,
+    season_id INT NOT NULL,
+    price_per_night INT NOT NULL,
+    FOREIGN KEY (rental_id) REFERENCES Rental(id),
+    FOREIGN KEY (season_id) REFERENCES Season(id)
+)
+
+Season (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    label VARCHAR(255) NOT NULL,
+    season_start DATETIME NOT NULL,
+    season_end DATETIME NOT NULL
+)
+
+Equipment (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    label VARCHAR(255) NOT NULL
+)
+
+equipment_rental (
+    rental_id INT NOT NULL,
+    equipment_id INT NOT NULL,
+    PRIMARY KEY (rental_id, equipment_id),
+    FOREIGN KEY (rental_id) REFERENCES Rental(id),
+    FOREIGN KEY (equipment_id) REFERENCES Equipment(id)
+)
+
