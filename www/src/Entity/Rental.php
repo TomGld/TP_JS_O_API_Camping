@@ -39,12 +39,6 @@ class Rental
     private ?string $image = null;
 
     /**
-     * @var Collection<int, EquipmentRental>
-     */
-    #[ORM\OneToMany(targetEntity: EquipmentRental::class, mappedBy: 'rental')]
-    private Collection $equipmentRentals;
-
-    /**
      * @var Collection<int, Price>
      */
     #[ORM\OneToMany(targetEntity: Price::class, mappedBy: 'rental')]
@@ -56,12 +50,19 @@ class Rental
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'rental')]
     private Collection $reservations;
 
+    /**
+     * @var Collection<int, Equipment>
+     */
+    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'rentals')]
+    private Collection $equipments;
+
 
     public function __construct()
     {
-        $this->equipmentRentals = new ArrayCollection();
+
         $this->prices = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->equipments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,35 +154,6 @@ class Rental
         return $this;
     }
 
-    /**
-     * @return Collection<int, EquipmentRental>
-     */
-    public function getEquipmentRentals(): Collection
-    {
-        return $this->equipmentRentals;
-    }
-
-    public function addEquipmentRental(EquipmentRental $equipmentRental): static
-    {
-        if (!$this->equipmentRentals->contains($equipmentRental)) {
-            $this->equipmentRentals->add($equipmentRental);
-            $equipmentRental->setRental($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipmentRental(EquipmentRental $equipmentRental): static
-    {
-        if ($this->equipmentRentals->removeElement($equipmentRental)) {
-            // set the owning side to null (unless already changed)
-            if ($equipmentRental->getRental() === $this) {
-                $equipmentRental->setRental(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Price>
@@ -239,6 +211,30 @@ class Rental
                 $reservation->setRental(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Equipment>
+     */
+    public function getEquipments(): Collection
+    {
+        return $this->equipments;
+    }
+
+    public function addEquipment(Equipment $equipment): static
+    {
+        if (!$this->equipments->contains($equipment)) {
+            $this->equipments->add($equipment);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): static
+    {
+        $this->equipments->removeElement($equipment);
 
         return $this;
     }

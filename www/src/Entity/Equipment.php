@@ -19,15 +19,17 @@ class Equipment
     private ?string $label = null;
 
     /**
-     * @var Collection<int, EquipmentRental>
+     * @var Collection<int, Rental>
      */
-    #[ORM\OneToMany(targetEntity: EquipmentRental::class, mappedBy: 'equipment')]
-    private Collection $equipmentRentals;
+    #[ORM\ManyToMany(targetEntity: Rental::class, mappedBy: 'equipments')]
+    private Collection $rentals;
 
     public function __construct()
     {
-        $this->equipmentRentals = new ArrayCollection();
+        $this->rentals = new ArrayCollection();
     }
+
+
 
     public function getId(): ?int
     {
@@ -47,32 +49,30 @@ class Equipment
     }
 
     /**
-     * @return Collection<int, EquipmentRental>
+     * @return Collection<int, Rental>
      */
-    public function getEquipmentRentals(): Collection
+    public function getRentals(): Collection
     {
-        return $this->equipmentRentals;
+        return $this->rentals;
     }
 
-    public function addEquipmentRental(EquipmentRental $equipmentRental): static
+    public function addRental(Rental $rental): static
     {
-        if (!$this->equipmentRentals->contains($equipmentRental)) {
-            $this->equipmentRentals->add($equipmentRental);
-            $equipmentRental->setEquipment($this);
+        if (!$this->rentals->contains($rental)) {
+            $this->rentals->add($rental);
+            $rental->addEquipment($this);
         }
 
         return $this;
     }
 
-    public function removeEquipmentRental(EquipmentRental $equipmentRental): static
+    public function removeRental(Rental $rental): static
     {
-        if ($this->equipmentRentals->removeElement($equipmentRental)) {
-            // set the owning side to null (unless already changed)
-            if ($equipmentRental->getEquipment() === $this) {
-                $equipmentRental->setEquipment(null);
-            }
+        if ($this->rentals->removeElement($rental)) {
+            $rental->removeEquipment($this);
         }
 
         return $this;
     }
+
 }
