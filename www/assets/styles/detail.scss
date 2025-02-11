@@ -1,0 +1,137 @@
+@import 'reset';
+
+.game-detail-card {
+  display: flex;
+  flex-direction: row;
+  background-color: $primary-bg;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 1000px;
+  overflow: hidden;
+  padding: 2rem;
+
+  .game-detail-image {
+    flex: 0 0 40%;
+    max-height: 400px;
+    overflow: hidden;
+    margin-right: 1.5rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+  }
+
+  .game-detail-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .game-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: $highlight-color;
+      margin-bottom: 1rem !important;
+      text-align: center;
+    }
+
+    .game-consoles {
+      margin-bottom: 1.5rem;
+
+      .console-badge {
+        display: inline-block;
+        background-color: $highlight-color;
+        color: $primary-bg;
+        padding: 0.1rem 0.5rem;
+        border-radius: 20px;
+        margin-right: 0.5rem;
+        font-size: 0.7rem;
+        font-weight: bold;
+      }
+    }
+
+    .game-info-detail {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      margin-bottom: 2rem;
+
+      .info-item {
+        display: flex;
+        flex-direction: column;
+
+        .info-label {
+          font-size: 0.9rem;
+          color: $text-muted;
+          opacity: 0.7;
+          margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+          font-size: 1.1rem;
+          font-weight: bold;
+
+          .pegi-icon {
+            width: 30px;
+            height: 100%;
+            margin-right: 0.5rem;
+            object-fit: contain;
+          }
+        }
+      }
+    }
+
+    .game-synopsis {
+      text-align: justify;
+      margin-bottom: 2rem;
+
+      h2 {
+        font-size: 1.5rem;
+        color: $highlight-color;
+        margin-bottom: 1rem;
+        font-weight: bold;
+      }
+
+      p {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        color: $text-light;
+      }
+    }
+
+    .game-ratings {
+      display: flex;
+      justify-content: space-between;
+
+      .rating-item {
+        text-align: center;
+        margin: 0 1rem;
+
+        .rating-label {
+          font-size: 1.1rem;
+          color: $text-muted;
+          opacity: 0.7;
+          margin-bottom: 0.25rem;
+        }
+
+        .rating-value {
+          font-size: 1.2rem;
+          font-weight: bold;
+
+          .rating-stars {
+            color: $accent-color;
+            margin-right: 0.5rem;
+          }
+
+          .rating-number {
+            color: $text-light;
+          }
+        }
+      }
+    }
+  }
+}

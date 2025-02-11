@@ -1,0 +1,28 @@
+
+<div class="game-detail-card">
+    {# <a href="{{path('app_detail', {'id': rental.id})}}" class="btn-link"> #}
+
+		<div>
+			<div class="game-detail-content">
+				<h2 class="game-title">{{rental.title}}</h2>
+
+                {# TODO: Faire la boucle pour rechercher les images, en attenant, afficher le nom. #}
+                <div class="game-detail-image">
+                    <img src="{{asset('camping/location_images/') ~ rental.image}}" alt="Image de la location numéro {{rental.nbrLocalization}}, {{rental.title}}." class="img-fluid">
+
+                    {# Si capacité > 1, alors afficher personne au pluriel #}
+                    {% if rental.capacity > 1 %}
+                        <p>Peut accueillir jusqu'à {{rental.capacity}} personnes</p>
+                    {% else %}
+                        <p>Peut accueillir jusqu'à {{rental.capacity}} personne</p>
+                    {% endif %}
+
+                    <p>Emplacement n° {{rental.nbrLocalization}}</p>
+
+                    <p>{{rental.type_rental_label}}</p>
+                </div>
+
+			</div>
+		</div>
+	</a>
+</div>

@@ -1,0 +1,111 @@
+@import "reset";
+
+.navbar {
+  background-color: $primary-bg;
+  padding: 1rem 0;
+  border-bottom: 1px solid $highlight-color;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+
+  .navbar-brand {
+    img {
+      height: 50px;
+      width: auto;
+    }
+  }
+
+  .navbar-toggler {
+    border-color: $text-light;
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(240, 240, 240, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+  }
+
+  .navbar-nav {
+    .nav-item {
+      .nav-link {
+        color: $text-light;
+
+        &:focus,
+        &:hover {
+          color: $highlight-color;
+        }
+      }
+    }
+
+    .dropdown {
+      position: relative;
+
+      .dropdown-menu {
+        position: absolute;
+        right: 0;
+        left: auto;
+        top: 100%;
+        background-color: $primary-bg;
+        border-color: $highlight-color;
+        min-width: 150px;
+        padding: 5px 0;
+        margin-top: 0.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+        .dropdown-item {
+          color: $text-light;
+          padding: 0.5rem 1rem;
+
+          &:hover,
+          &:focus {
+            background-color: rgba($highlight-color, 0.1);
+            color: $highlight-color;
+          }
+        }
+      }
+    }
+
+    .dropdown-toggle::after {
+      border-top-color: $text-light;
+    }
+  }
+}
+
+//partie admin
+.admin-menu {
+  .nav-link {
+    color: $text-light;
+    display: flex;
+    align-items: center;
+
+    .icon-user {
+      color: $text-light !important;
+      font-size: 30px;
+
+      &:hover {
+        color: $highlight-color !important;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    background-color: $primary-bg;
+    border: 1px solid $highlight-color;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 5px 0;
+
+    .dropdown-item {
+      color: $text-light;
+      padding: 0.5rem 1rem;
+
+      &:hover {
+        background-color: rgba($highlight-color, 0.1);
+        color: $highlight-color;
+      }
+    }
+  }
+
+  .dropdown-toggle::after {
+    border-top-color: $text-light;
+  }
+}

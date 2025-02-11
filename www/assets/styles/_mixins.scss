@@ -1,0 +1,26 @@
+//mixin pour les transitions
+@mixin transition($properties, $duration: 0.3s, $easing:ease){
+  transition: #{$properties} #{$duration} #{$easing};
+}
+
+//mixin pour les ombres
+@mixin box-shadow($color: rgba(0,0,0,0.2), $blur: 20px )
+{
+  box-shadow: 0 5px #{$blur} #{$color};
+}
+
+//mixin pour les boutons
+@mixin button($bg-color, $text-color, $hover-bg, $hover-text)
+{
+  background-color: $bg-color;
+  color: $text-color;
+  border: none;
+  padding: 0.5rem 1rem;
+  @include box-shadow();
+  @include transition(all);
+
+  &:hover{
+    background-color: $hover-bg;
+    color: $hover-text;
+  }
+}

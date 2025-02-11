@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}🏠 Accueil camping
+{% endblock %}
+
+{% block body %}
+
+	<div class="container mt-5">
+		<header>
+			<h1 class="text-center mb-5 display-4">{{title|default('Camping L\'IDEM')}}</h1>
+		</header>
+
+
+		<div class="game-grid">
+			{% for rental in rentals %}
+				{% include "components/_rental_card.html.twig" with {'rental':rental} %}
+			{% endfor %}
+
+		</div>
+
+	</div>
+
+{% endblock %}

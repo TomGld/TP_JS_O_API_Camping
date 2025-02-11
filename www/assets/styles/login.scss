@@ -1,0 +1,92 @@
+@import "reset";
+@import "_mixins";
+@import "_placeholders";
+
+$form-bg: lighten($primary-bg, 5%);
+$input-bg: lighten($primary-bg, 10%);
+
+.login-form {
+  background-color: $form-bg;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 15px;
+  @include box-shadow();
+
+  h1 {
+    color: $highlight-color;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: $text-light;
+    }
+
+    input {
+      width: 100%;
+      background-color: $input-bg;
+      color: $text-light;
+      border: 1px solid $text-muted;
+      padding: 0.75rem;
+      border-radius: 5px;
+      @include transition(all);
+
+      &:focus {
+        border-color: $highlight-color;
+        @include box-shadow($highlight-color, 5px);
+        outline: none;
+      }
+    }
+
+    .link-auth{
+      color: $highlight-color;
+      text-decoration: none;
+      font-weight: bold;
+      padding-top: 20px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .alert {
+    background-color: rgba($accent-color, 0.1);
+    border: 1px solid $accent-color;
+    padding: 0.75rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+
+  .btn-login {
+    @include button(
+      $highlight-color,
+      $primary-bg,
+      darken($highlight-color, 10%),
+      $primary-bg
+    );
+  }
+
+  .user-logged-in {
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+
+    a {
+      color: $highlight-color;
+      text-decoration: none;
+      font-weight: bold;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

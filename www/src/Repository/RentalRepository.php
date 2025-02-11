@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Equipment;
+use App\Entity\Price;
 use App\Entity\Rental;
+use App\Entity\Season;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +19,98 @@ class RentalRepository extends ServiceEntityRepository
         parent::__construct($registry, Rental::class);
     }
 
-    //    /**
-    //     * @return Rental[] Returns an array of Rental objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
 
-    //    public function findOneBySomeField($value): ?Rental
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+     /**
+      * Function pour retourner tous des rentals
+        * @return Rental[]
+      */
+    public function findAllRentals(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+
+        //Sélectionner les champs nécessaires
+        $query = $qb->select([
+            'r.id',
+            'r.title',
+            'r.description',
+            'r.capacity',
+            'r.nbrLocalization', //Par la propriété dans l'entity
+            'r.isActive', //Par la propriété dans l'entity
+            'r.image',
+        ])
+        ->from(Rental::class, 'r')
+        ->join('r.typeRental', 't')
+        ->getQuery();
+
+        $results = $query->getResult();
+
+        return $results;
+    }
+
+    // /**
+    //  * Function pour retourner un rental, son type_rental_id, ses equipment, ses seasons et ses price
+    //  */
+    // public function findAllInfoRental()
+    // {
+    //     $entityManager = $this->getEntityManager();
+    //     $qb = $entityManager->createQueryBuilder();
+
+    //     //Sélectionner les champs nécessaires
+    //     $query = $qb->select([
+    //         'r.id',
+    //         'r.title',
+    //         'r.description',
+    //         'r.capacity',
+    //         'r.nbrLocalization', //Par la propriété dans l'entity
+    //         'r.isActive', //Par la propriété dans l'entity
+    //         'r.image',
+    //         't.id as type_rental_id',
+    //         't.label as type_rental_label',
+    //         're.id as rental_equipment_id',
+    //         're.label as rental_equipment_label',
+    //         's.id as season_id',
+    //         's.label as season_label',
+    //         's.season_start',
+    //         's.season_end',
+    //     ])
+    //     ->from(Rental::class, 'r')
+    //     ->join('r.typeRental', 't')
+    //     ->join(Equipment::class, 're')
+    //     ->join(Season::class, 's')
+    //     ->join(Price::class, 'p')
+    //     ->getQuery();
+
+    //     $results = $query->getResult();
+
+    //     return $results;
+    // }
+
+    /**
+     * Méthode pour retourner un rental (title, capacity, nbrLocalization, image, typeRental)
+     */
+    public function findAllRentalCard()
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+
+        //Sélectionner les champs nécessaires
+        $query = $qb->select([
+            'r.id',
+            'r.title',
+            'r.capacity',
+            'r.nbrLocalization',
+            'r.isActive',
+            'r.image',
+            't.label as type_rental_label',
+        ])
+        ->from(Rental::class, 'r')
+        ->join('r.typeRental', 't')
+        ->getQuery();
+
+        $results = $query->getResult();
+
+        return $results;
+    }
+
 }

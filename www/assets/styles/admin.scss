@@ -1,0 +1,338 @@
+@import "reset";
+
+.game-list-container {
+  background-color: $primary-bg;
+  color: $text-light;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    color: $highlight-color;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  h2 {
+    color: $highlight-color;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .game-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid $text-muted;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 2rem 0;
+
+    thead {
+      tr {
+        th {
+          background-color: darken($primary-bg, 5%);
+          color: $highlight-color;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          padding: 1rem;
+          text-align: left;
+          border-bottom: 1px solid $text-muted;
+          border-right: 1px solid $text-muted;
+
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        &:hover {
+          background-color: rgba($highlight-color, 0.05);
+        }
+
+        &:last-child td {
+          border-bottom: none;
+        }
+
+        td {
+          padding: 1rem;
+          text-align: left;
+          border-bottom: 1px solid $text-muted;
+          border-right: 1px solid $text-muted;
+
+          &:last-child {
+            border-right: none;
+          }
+
+          &.game-price {
+            font-weight: bold;
+            color: $accent-color;
+          }
+
+          .game-image-admin {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+
+          .game-actions {
+            display: flex;
+            justify-content: space-around;
+
+            a {
+              display: inline-block;
+              padding: 0.5rem 1rem;
+              border-radius: 4px;
+              text-decoration: none;
+              font-weight: bold;
+              transition: all 0.3s ease;
+              text-align: center;
+              min-width: 80px;
+              margin: 0 0.5rem;
+
+              &.view-link {
+                background-color: $highlight-color;
+                color: $primary-bg;
+
+                &:hover {
+                  background-color: darken($highlight-color, 10%);
+                  box-shadow: 0 2px 4px rgba($highlight-color, 0.4);
+                }
+              }
+
+              &.edit-link {
+                background-color: $accent-color;
+                color: $text-light;
+
+                &:hover {
+                  background-color: darken($accent-color, 10%);
+                  box-shadow: 0 2px 4px rgba($accent-color, 0.4);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .add-game-btn {
+    display: inline-block;
+    background-color: $highlight-color;
+    color: $primary-bg;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken($highlight-color, 10%);
+      box-shadow: 0 2px 4px rgba($highlight-color, 0.4);
+    }
+  }
+}
+
+.game-form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: $primary-bg;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  h1,
+  h2 {
+    color: $highlight-color;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.game-form {
+  width: 450px;
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      color: $highlight-color;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: lighten($primary-bg, 5%);
+      border: 1px solid $text-muted;
+      border-radius: 5px;
+      color: $text-light;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $highlight-color;
+        box-shadow: 0 0 0 2px rgba($highlight-color, 0.25);
+      }
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .console-switches {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 0.5rem;
+
+      .form-switch {
+        display: flex;
+        align-items: center;
+        background-color: lighten($primary-bg, 7%);
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: rgba($highlight-color, 0.1);
+        }
+
+        .form-check-input {
+          margin-right: 1rem;
+          width: 3em;
+          height: 1em;
+          background-color: $text-muted;
+          border: none;
+
+          &:checked {
+            background-color: $highlight-color;
+          }
+        }
+
+        .form-check-label {
+          color: $text-light;
+          cursor: pointer;
+          height: 1rem;
+        }
+      }
+    }
+
+    .form-error {
+      color: $accent-color;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+    .link-auth {
+      color: $highlight-color;
+      text-decoration: none;
+      font-weight: bold;
+      padding-top: 20px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .btn-submit {
+    width: 100%;
+    background-color: $highlight-color;
+    color: $primary-bg;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      background-color: darken($highlight-color, 10%);
+      box-shadow: 0 2px 4px rgba($highlight-color, 0.4);
+    }
+
+    i {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.note-selection {
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px;
+    padding-right: 2rem;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &-delete {
+      background-color: $accent-color;
+      color: $text-light;
+
+      &:hover {
+        background-color: darken($accent-color, 10%);
+        box-shadow: 0 2px 4px rgba($accent-color, 0.4);
+      }
+    }
+
+    &-edit {
+      background-color: $highlight-color;
+      color: $primary-bg;
+
+      &:hover {
+        background-color: darken($highlight-color, 10%);
+        box-shadow: 0 2px 4px rgba($highlight-color, 0.4);
+      }
+    }
+
+    &-dashboard {
+      background-color: $dashboard-color;
+      color: $text-light;
+
+      &:hover {
+        background-color: darken($dashboard-color, 10%);
+        box-shadow: 0 2px 4px rgba($dashboard-color, 0.4);
+      }
+    }
+
+    &-back {
+      background-color: $text-light;
+      color: $primary-bg;
+
+      &:hover {
+        background-color: darken($text-light, 10%);
+        box-shadow: 0 2px 4px rgba($text-light, 0.4);
+      }
+    }
+  }
+}
