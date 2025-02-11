@@ -24,13 +24,17 @@
 
         <p>{{rental.type_rental_label}}</p>
 
-        {# equipments #}
-        <p>Equipements :</p>
-        <ul>
-            {% for equipment in rental.equipments %}
-                <li>{{ equipment }}</li>
-            {% endfor %}
-        </ul>
+        {# Equipments #}
+        {# If equipments are not null, show the equipments #}
+        {% if rental.equipments is not empty and rental.equipments[0] is not null %}
+            <p>Equipements :</p>
+            <ul>
+                {% for equipment in rental.equipments %}
+                    <li>{{ equipment }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
 
         {# Seasons + price #}
 
@@ -51,11 +55,9 @@
             {% endif %}
         {% endif %} 
 
+        {# TODO: Si la location est active, alors afficher le bouton de réservation #}
 
-        {# isActive #}
-        {# Si la location est active, alors afficher le bouton de réservation #}
 
-        {# isActive ? You can reserve it #}
 		
 
 		
