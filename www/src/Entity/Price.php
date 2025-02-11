@@ -17,7 +17,7 @@ class Price
     #[ORM\JoinColumn(nullable: false)]
     private ?Rental $rental = null;
 
-    #[ORM\OneToOne(inversedBy: 'price', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'prices')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Season $season = null;
 
@@ -46,7 +46,7 @@ class Price
         return $this->season;
     }
 
-    public function setSeason(Season $season): static
+    public function setSeason(?Season $season): static
     {
         $this->season = $season;
 

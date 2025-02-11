@@ -113,4 +113,45 @@ class RentalRepository extends ServiceEntityRepository
         return $results;
     }
 
+    /**
+     * Méthode pour retourner un rental, son image, ses prices et ses seasons, son typeRental, ses equipments
+
+     */
+    public function findRentalInfoById($id)
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+
+        //Sélectionner les champs nécessaires
+        $query = $qb->select([
+            'r.id',
+            'r.title',
+            'r.description',
+            'r.capacity',
+            'r.nbrLocalization',
+            'r.isActive',
+            'r.image',
+            't.label as type_rental_label',
+            're.label as rental_equipment_label',
+            'p.pricePerNight',
+            's.label as season_label',
+            's.season_start',
+            's.season_end',
+        ])
+        ->from(Rental::class, 'r')
+        ->join('r.typeRental', 't')
+        ->leftJoin('r.equipments', 're')
+        ->leftJoin('r.prices', 'p')
+        ->leftJoin('p.season', 's')
+        ->where('r.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery();
+
+        $results = $query->getResult();
+
+
+
+        return $results;
+    }
+
 }

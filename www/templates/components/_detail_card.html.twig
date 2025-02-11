@@ -1,0 +1,63 @@
+
+<div
+	class="game-detail-card">
+
+	<div class="game-detail-image">
+    <img src="{{asset('camping/location_images/' ~ rental.image)}}" alt="">
+
+
+	</div>
+
+	<div class="game-detail-content">
+		<p class="game-title">{{ rental.title }}</p>
+		<p class="title-description">Description :</p>
+		<p class="description">{{ rental.description }}</p>
+
+        {# Si capacité > 1, alors afficher personne au pluriel #}
+        {% if rental.capacity > 1 %}
+            <p>Peut accueillir jusqu'à {{rental.capacity}} personnes</p>
+        {% else %}
+            <p>Peut accueillir jusqu'à {{rental.capacity}} personne</p>
+        {% endif %}
+
+        <p>Emplacement n° {{rental.nbrLocalization}}</p>
+
+        <p>{{rental.type_rental_label}}</p>
+
+        {# equipments #}
+        <p>Equipements :</p>
+        <ul>
+            {% for equipment in rental.equipments %}
+                <li>{{ equipment }}</li>
+            {% endfor %}
+        </ul>
+
+        {# Seasons + price #}
+
+        <p>Prix actuel :</p>
+        
+        {% if rental.isActive == true %}
+            
+            {# Vérifier si une saison correspond à la date actuelle #}
+            {% set priceFound = false %}
+            {% for season in rental.seasons %}
+                {% if date('now') >= season.season_start and date('now') <= season.season_end %}
+                    <p>{{ season.pricePerNight }} €</p>
+                    {% set priceFound = true %}
+                {% endif %}
+            {% endfor %}
+            {% if not priceFound %}
+                <p>Aucun prix n'a été renseigné pour l'instant, pour plus d'informations, veuillez nous contacter.</p>
+            {% endif %}
+        {% endif %} 
+
+
+        {# isActive #}
+        {# Si la location est active, alors afficher le bouton de réservation #}
+
+        {# isActive ? You can reserve it #}
+		
+
+		
+	</div>
+</div>

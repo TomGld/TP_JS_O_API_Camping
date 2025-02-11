@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{# On peut redéfinir le titre de l'onglet #}
+{% block title %}
+	{{title|default('Détail du projet')}}
+	{# | (pipe) default('') permet de mettre la valeur par défaut quand la variable n'est pas transmise par le controller #}
+{% endblock %}
+
+{% block body %}
+	{# On récupère le template de détail card #}
+	{% include "components/_detail_card.html.twig" %}
+{% endblock %}

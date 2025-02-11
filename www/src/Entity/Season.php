@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SeasonRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,8 +24,11 @@ class Season
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $season_end = null;
 
-    #[ORM\OneToOne(mappedBy: 'season', cascade: ['persist', 'remove'])]
-    private ?Price $price = null;
+    /**
+     * @var Collection<int, Pricing>
+     */
+    #[ORM\OneToMany(targetEntity: Price::class, mappedBy: 'season_id')]
+    private Collection $prices;
 
     public function getId(): ?int
     {
@@ -67,20 +71,34 @@ class Season
         return $this;
     }
 
-    public function getPrice(): ?Price
+    /**
+     * @return Collection<int, Pricing>
+     */
+    public function getPrices(): Collection
     {
-        return $this->price;
+        return $this->prices;
     }
 
-    public function setPrice(Price $price): static
+    public function addPrice(Price $price): static
     {
-        // set the owning side of the relation if necessary
-        if ($price->getSeason() !== $this) {
+        if (!$this->prices->contains($price)) {
+            $this->prices->add($price);
             $price->setSeason($this);
         }
 
-        $this->price = $price;
+        return $this;
+    }
+
+    public function removePrice(Price $price): static
+    {
+        if ($this->prices->removeElement($price)) {
+            // set the owning side to null (unless already changed)
+            if ($price->getSeason() === $this) {
+                $price->setSeason(null);
+            }
+        }
 
         return $this;
     }
+
 }

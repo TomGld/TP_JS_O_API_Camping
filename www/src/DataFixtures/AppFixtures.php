@@ -170,7 +170,7 @@ class AppFixtures extends Fixture
                 'capacity' => 2,
                 'nbr_localization' => 15,
                 'type_rental_id' => 1,
-                'is_active' => 0,
+                'isActive' => 0,
                 'image' => 'tente1.jpg',
             ],
         ];
@@ -182,7 +182,7 @@ class AppFixtures extends Fixture
             $rental->setCapacity($value['capacity']);
             $rental->setNbrLocalization($value['nbr_localization']);
             $rental->setTypeRental($this->getReference('type_rental_' . $value['type_rental_id']));
-            $rental->setActive($value['is_active']);
+            $rental->setActive($value['isActive']);
             $rental->setImage($value['image']);
             $manager->persist($rental);
 
