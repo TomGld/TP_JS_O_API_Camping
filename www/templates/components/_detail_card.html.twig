@@ -39,21 +39,26 @@
         {# Seasons + price #}
 
         <p>Prix actuel :</p>
-        
         {% if rental.isActive == true %}
             
             {# Vérifier si une saison correspond à la date actuelle #}
             {% set priceFound = false %}
             {% for season in rental.seasons %}
                 {% if date('now') >= season.season_start and date('now') <= season.season_end %}
-                    <p>{{ season.pricePerNight }} €</p>
+                    {% if season.pricePerNight is not null %}
+                    <p>{{ season.pricePerNight }} €/nuit</p>
                     {% set priceFound = true %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
             {% if not priceFound %}
-                <p>Aucun prix n'a été renseigné pour l'instant, pour plus d'informations, veuillez nous contacter.</p>
+            <p>Aucun prix n'a été renseigné pour l'instant, pour cette période, pour plus d'informations, veuillez nous contacter.</p>
             {% endif %}
-        {% endif %} 
+        {% else %}
+            <p>Cette location n'est pas disponible pour le moment.</p>
+        {% endif %}
+            
+
 
         {# TODO: Si la location est active, alors afficher le bouton de réservation #}
 

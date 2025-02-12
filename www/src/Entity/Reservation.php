@@ -34,7 +34,7 @@ class Reservation
     #[ORM\Column]
     private ?int $nbrMinor = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
     private ?string $status = null;
 
     #[ORM\Column]
@@ -121,12 +121,12 @@ class Reservation
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(?int $status): static
     {
         $this->status = $status;
 
