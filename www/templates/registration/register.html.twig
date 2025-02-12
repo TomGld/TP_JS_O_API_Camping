@@ -2,73 +2,75 @@
 
 {% block title %}Créer un compte{% endblock %}
 
+
 {% block body %}
+    <h1>Register</h1>
 
 {{ form_start(registrationForm,  { 'attr': { 'class':'game-form' } }) }}
 
-    <h1>Créer mon compte</h1>
-    {{ form_errors(registrationForm) }}
+<h1>Créer mon compte</h1>
+{{ form_errors(registrationForm) }}
 
-        <div class="form-group">
-            {{form_label(registrationForm.email)}}
-            {{form_widget(registrationForm.email)}}
-            {{form_errors(registrationForm.email)}}
-        </div>
+<div class="form-group">
+	{{form_label(registrationForm.email)}}
+	{{form_widget(registrationForm.email)}}
+	{{form_errors(registrationForm.email)}}
+</div>
 
-       <div class="form-group">
-            {{form_label(registrationForm.password)}}
-            {{form_widget(registrationForm.password)}}
-            {{form_errors(registrationForm.password)}}
-        </div>
+<div class="form-group">
+	{{form_label(registrationForm.plainPassword)}}
+	{{form_widget(registrationForm.plainPassword)}}
+	{{form_errors(registrationForm.plainPassword)}}
+</div>
 
-        <div class="form-group">
-            {{form_label(registrationForm.firstname)}}
-            {{form_widget(registrationForm.firstname)}}
-            {{form_errors(registrationForm.firstname)}}
-        </div>
+<div class="form-group">
+	{{form_label(registrationForm.firstname)}}
+	{{form_widget(registrationForm.firstname)}}
+	{{form_errors(registrationForm.firstname)}}
+</div>
 
-        <div class="form-group">
-            {{form_label(registrationForm.lastname)}}
-            {{form_widget(registrationForm.lastname)}}
-            {{form_errors(registrationForm.lastname)}}
-        </div>
+<div class="form-group">
+	{{form_label(registrationForm.lastname)}}
+	{{form_widget(registrationForm.lastname)}}
+	{{form_errors(registrationForm.lastname)}}
+</div>
 
-        <div class="form-group">
-            {{form_label(registrationForm.date_of_birth)}}
-            {{form_widget(registrationForm.date_of_birth)}}
-            {{form_errors(registrationForm.date_of_birth)}}
-        </div>
+<div class="form-group">
+	{{form_label(registrationForm.date_of_birth)}}
+	{{form_widget(registrationForm.date_of_birth)}}
+	{{form_errors(registrationForm.date_of_birth)}}
+</div>
 
-        <div class="form-group">
-            {{form_label(registrationForm.username)}}
-            {{form_widget(registrationForm.username)}}
-            {{form_errors(registrationForm.username)}}
-        </div>
+<div class="form-group">
+	{{form_label(registrationForm.username)}}
+	{{form_widget(registrationForm.username)}}
+	{{form_errors(registrationForm.username)}}
+</div>
 
-        <div class="form-group">
-            {{form_label(registrationForm.phone)}}
-            {{form_widget(registrationForm.phone)}}
-            {{form_errors(registrationForm.phone)}}
-        </div>
+<div class="form-group">
+	{{form_label(registrationForm.phone)}}
+	{{form_widget(registrationForm.phone)}}
+	{{form_errors(registrationForm.phone)}}
+</div>
 
-        <div class="form-group">
-            {{form_label(registrationForm.address)}}
-            {{form_widget(registrationForm.address)}}
-            {{form_errors(registrationForm.address)}}
-        </div>
-
-
-        <button class="btn-submit" type="submit">
-            <i class="fas fa-save"></i>
-            {{button_label|default('Créer un compte')}}
-        </button>
+<div class="form-group">
+	{{form_label(registrationForm.address)}}
+	{{form_widget(registrationForm.address)}}
+	{{form_errors(registrationForm.address)}}
+</div>
 
 
-        {# TODO: Ajouter le btn connexion #}
-        {# <div class="form-group">
+<button class="btn-submit" type="submit">
+	<i class="fas fa-save"></i>
+	{{button_label|default('Créer un compte')}}
+</button>
+
+
+{# TODO: Ajouter le btn connexion #}
+{# <div class="form-group">
             <a class="link-auth" href="{{ path('app_login') }}">Déjà un compte ? Connectez-vous</a>
         </div> #}
 
-    {{ form_end(registrationForm) }}
+{{ form_end(registrationForm) }}
 
 {% endblock %}
