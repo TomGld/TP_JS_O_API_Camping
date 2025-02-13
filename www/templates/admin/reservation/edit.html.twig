@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Édition - réservation{% endblock %}
+
+{% block body %}
+	<div class="game-form-container">
+        <h1>Éditer une réservation</h1>
+        <h2>{{reservation.rental.title}}</h2>
+        <h2>Emplacement n° {{reservation.rental.nbrLocalization}}</h2>
+
+        {{ include('admin/reservation/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+		<div class="action-buttons">
+            <a href="{{ path('app_admin_reservation_index') }}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> 
+            Retour à la liste des réservations</a>
+        </div>
+
+
+    </div>
+{% endblock %}

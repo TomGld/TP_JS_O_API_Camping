@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation{% endblock %}
+
+{% block body %}
+        
+    <h1>Réservation n° {{reservation.id}}</h1>
+	<div class="game-list-container">
+
+        <h2>{{ reservation.rental.title }}</h2>
+        <h2>Emplacement n° {{reservation.rental.nbrLocalization}}</h2>
+
+        <table class="game-table">
+            <thead>
+            <tr>
+                <th>Locataire</th>
+                <th>Date d'arrivée</th>
+                <th>Date de départ</th>
+                <th>Nombre d'adulte(s)</th>
+                <th>Nombre de mineur(s)</th>
+                <th>Status</th>
+                <th>Checké</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ reservation.renter.firstname }} {{ reservation.renter.lastname }}</td>
+                <td>{{ reservation.dateStart ? reservation.dateStart|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reservation.dateEnd ? reservation.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reservation.nbrAdult }}</td>
+                <td>{{ reservation.nbrMinor }}</td>
+                <td>
+                {% if reservation.status == 1 %}
+                    validée
+                {% elseif reservation.status == 2 %}
+                    annulée
+                {% elseif reservation.status == 3 %}
+                    en attente
+                {% endif %}
+                </td>
+                <td>
+                {% if reservation.checked == 1 %}
+                    oui
+                {% elseif reservation.checked == 2 %}
+                    non
+                {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <div class="action-buttons">
+            <div>
+                <a href="{{ path('app_admin_reservation_edit', {'id': reservation.id}) }}" class="btn btn-edit">Éditer</a>
+            </div>
+
+                <div>
+                    <a href="{{path('app_admin_reservation_index')}}" class="btn btn-back">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste des réservations</a>
+                </div>
+        </div>
+    </div>
+
+    <div class="game-detail-card">
+
+        <div class="game-detail-image">
+            <img src="{{asset('camping/location_images/' ~ reservation.rental.image)}}" alt="">
+        </div>
+
+        <div class="game-detail-content">
+            <p class="game-title">{{ reservation.rental.title }}</p>
+            <p class="title-description">Description :</p>
+            <p class="description">{{ reservation.rental.description }}</p>
+
+            {# Si capacité > 1, alors afficher personne au pluriel #}
+            {% if reservation.rental.capacity > 1 %}
+                <p>Peut accueillir jusqu'à {{reservation.rental.capacity}} personnes</p>
+            {% else %}
+                <p>Peut accueillir jusqu'à {{reservation.rental.capacity}} personne</p>
+            {% endif %}
+
+            <p>Emplacement n° {{reservation.rental.nbrLocalization}}</p>
+
+            <p>{{reservation.rental.typeRental.Label}}</p>
+
+            {# Equipments #}
+            {# If equipments are not null, show the equipments #}
+            {% if reservation.rental.equipments is not empty and reservation.rental.equipments[0] is not null %}
+                <p>Equipements :</p>
+                <ul>
+                    {% for equipment in reservation.rental.equipments %}
+                        <li>{{ equipment }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {# Si réservation est déclaré (dans la création d\'une réservation), alors ne pas afficher le prix #}
+
+            
+            {% if reservation is not defined %}
+                        
+                {# Seasons + price #}
+                <p>Prix actuel :</p>
+                {% if reservation.rental.isActive == true %}
+                    
+                    {# Vérifier si une saison correspond à la date actuelle #}
+                    {% set priceFound = false %}
+                    {% for season in reservation.rental.seasons %}
+                        {% if reservation.season.season_start is defined and reservation.season.season_end is defined %}
+                            {% if date('now') >= reservation.season.season_start and date('now') <= reservation.season.season_end %}
+                                {% if reservation.season.pricePerNight is not null %}
+                                    <p>{{ reservation.season.pricePerNight }} €/nuit</p>
+                                    {% set priceFound = true %}
+                                {% endif %}
+                            {% endif %}
+                        {% elseif reservation.season.seasonStart is defined and reservation.season.seasonEnd is defined %}
+                            {% if date('now') >= reservation.season.seasonStart and date('now') <= reservation.season.seasonEnd %}
+                                {% if reservation.season.pricePerNight is not null %}
+                                    <p>{{ reservation.season.pricePerNight }} €/nuit</p>
+                                    {% set priceFound = true %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if not priceFound %}
+                    <p>Aucun prix n'a été renseigné pour l'instant, pour cette période, pour plus d'informations, veuillez nous contacter.</p>
+                    {% endif %}
+                {% else %}
+                    <p>Cette location n'est pas disponible pour le moment.</p>
+                {% endif %}
+            {% endif %}
+
+
+            {# TODO: Si la location est active, alors afficher le bouton de réservation #}
+
+        </div>
+    </div>
+
+
+{% endblock %}

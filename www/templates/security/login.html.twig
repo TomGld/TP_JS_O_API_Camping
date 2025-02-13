@@ -16,7 +16,7 @@
                 </div>
             {% else %}
 
-                <h1>Me connecter</h1>
+                <h1 style="text-align: center;">Me connecter</h1>
 
                 <div class="form-group">
                     <label for="username">Email :</label>
@@ -35,8 +35,11 @@
                 <button class="btn-submit" type="submit">
                     <i class="fas fa-save"></i>
                     Se connecter
-
                 </button>
+
+                <div class="form-group">
+				    <a class="link-auth" href="{{ path('app_register') }}">Vous n'avez pas de compte. Inscrivez-vous</a>
+			    </div>
             {% endif %}
 
         </form>

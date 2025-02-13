@@ -1,0 +1,78 @@
+{{ form_start(form, { 'attr': {'class':'game-form'} }) }}
+{{ form_errors(form) }}
+
+    {# dateStart #}
+    <div class="form-group">
+    
+        {{form_label(form.dateStart, 'Date de d\'arrivée')}}
+        {{form_widget(form.dateStart, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.dateStart)}}
+    </div>
+    {# dateEnd #}
+    <div class="form-group">
+    
+        {{form_label(form.dateEnd, 'Date de départ')}}
+        {{form_widget(form.dateEnd, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.dateEnd)}}
+    </div>
+    {# nbrAdults #}
+    <div class="form-group">
+    
+        {{form_label(form.nbrAdult, 'Nombre d\'adultes')}}
+        {{form_widget(form.nbrAdult, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.nbrAdult)}}
+    </div>
+
+    {# nbrMinors #}
+    <div class="form-group">
+    
+        {{form_label(form.nbrMinor, 'Nombre de mineurs')}}
+        {{form_widget(form.nbrMinor, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.nbrMinor)}}
+    </div>
+    
+    {# status #}
+    <div class="form-group">
+        {{form_label(form.status, 'Status')}}
+        {{form_widget(form.status, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.status)}}
+    </div>
+
+    {# checked #}
+    <div class="form-group">
+        {{form_label(form.checked, 'Checked')}}
+        {{form_widget(form.checked, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.checked)}}
+    </div>
+
+    {# Rental #}
+    <div class="form-group">
+        {{form_label(form.rental, 'Location concernée')}}
+        {{form_widget(form.rental, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.rental)}}
+    </div>
+
+    {# Renter #}
+    <div class="form-group">
+        {{form_label(form.renter, 'Locataire')}}
+        {{form_widget(form.renter, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.renter)}}
+    </div>
+
+    {# Applied_Price #}
+    <div class="form-group">
+        {{form_label(form.appliedPrice, 'Prix appliqué')}}
+        {{form_widget(form.appliedPrice, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.appliedPrice)}}
+    </div>
+
+    
+
+
+    {{ form_widget(form) }}
+
+    <button class="btn-submit" type="submit">
+	<i class="fas fa-save"></i>
+	{{button_label|default('Enregistrer')}}
+</button>
+{{ form_end(form) }}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reservation{% endblock %}
+
+{% block body %}
+<div class="game-form-container">
+
+    <h1>Créer une réservation pour ce bien :</h1>
+
+	{% include "components/_detail_card.html.twig" %}
+
+    {% for message in app.flashes %}
+        <div class="alert danger">
+            {{ message }}
+        </div>
+        
+    {% endfor %}
+
+    <div style="display: flex; justify-content: center;">
+        {{ include('admin/reservation/_form.html.twig') }}
+    </div>
+
+    <div class="action-buttons">
+        <a href="{{ path('app_admin_reservation_index') }}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> 
+            Retour à la liste des réservations
+        </a>
+    </div>
+</div>
+{% endblock %}

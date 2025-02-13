@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation - Accueil{% endblock %}
+
+{% block body %}
+    <h1>Reservation - Accueil</h1>
+	<div class="game-list-container">
+        <table class="game-table">
+            <thead>
+                <tr>
+                    <th>Locataire</th>
+                    <th>Date d'arrivée</th>
+                    <th>Date de départ</th>
+                    <th>Adults(s)</th>
+                    <th>Mineur(s)</th>
+                    <th>Status</th>
+                    <th>Checké</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.renter.firstname }} {{ reservation.renter.lastname }}</td>
+                    <td>{{ reservation.dateStart ? reservation.dateStart|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ reservation.dateEnd ? reservation.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
+                    <td style="text-align: center;">{{ reservation.nbrAdult }}</td>
+                    <td style="text-align: center;">{{ reservation.nbrMinor }}</td>
+                    <td>
+                        {# Déclaration des constantes des status de la réservation suivant le int en BDD #}
+                        <div style="text-align: center;">
+                            {% if reservation.status == 1 %}
+                                validée
+                            {% elseif reservation.status == 2 %}
+                                annulée
+                            {% elseif reservation.status == 3 %}
+                                en attente
+                            {% else %}
+                                non déclaré
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        {# Déclaration des constantes des check de la réservation suivant le int en BDD #}
+                        <div style="text-align: center;">
+                            {% if reservation.checked == 1 %}
+                                oui
+                            {% elseif reservation.checked == 2 %}
+                                non
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="game-actions">
+                            <a href="{{ path('app_admin_reservation_show', {'id': reservation.id}) }}" class="view-link">Détail</a>
+                            <a href="{{ path('app_admin_reservation_edit', {'id': reservation.id}) }}" class="edit-link">Éditer</a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucune réservation enregistrée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="action-buttons">
+			<a href="{{ path('app_admin_dashboard') }}" class="btn btn-back">
+				<i class="fas fa-arrow-left"></i> 
+				Retour au dashboard
+			</a>
+		</div>
+
+        {# TODO: Ajouter le lien pour aller au dashboard sur rentals. #}
+        {# <a href="{{ path('app_admin_reservation_new', {'id': 0}) }}" class="add-game-btn">En créer une nouvelle</a> #}
+    </div>
+{% endblock %}
