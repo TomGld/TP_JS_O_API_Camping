@@ -84,8 +84,56 @@ final class AdminReservationController extends AbstractController
     #[Route('/{id}', name: 'app_admin_reservation_show', methods: ['GET'])]
     public function show(Reservation $reservation): Response
     {
+
+        //Reconstruire un tableau associatif pour le component _detail_card.html.twig
+        $rental = [
+            'id' => $reservation->getRental()->getId(),
+            'type_rental_label' => $reservation->getRental()->getTypeRental()->getLabel(),
+            'title' => $reservation->getRental()->getTitle(),
+            'description' => $reservation->getRental()->getDescription(),
+            'capacity' => $reservation->getRental()->getCapacity(),
+            'nbrLocalization' => $reservation->getRental()->getNbrLocalization(),
+            'isActive' => $reservation->getRental()->IsActive(),
+            'image' => $reservation->getRental()->getImage(),
+            'equipments' => $reservation->getRental()->getEquipments()->toArray(),
+            'price' => $reservation->getAppliedPrice()->getPricePerNight(),
+            'seasons' => [],
+        ];
+
+        //Traitements
+
+            //Traitement de sécurisation pour les équipements
+                //Extraire les equipments
+                $equipments = [];
+                foreach ($rental['equipments'] as $equipment) {
+                    $equipments[] = $equipment->getLabel();
+                }
+                //unset equipments
+                unset($rental['equipments']);
+
+                //Supprimer id et rental de $equipments
+                unset($equipments['id']);
+                unset($equipments['rental']);
+
+                //Ajouter les equipments dans le $rental
+                $rental['equipments'] = $equipments;
+
+
+                // Récupérer les saisons associées via les prix
+                foreach ($reservation->getRental()->getPrices() as $price) {
+                    $season = $price->getSeason();
+                    $rental['seasons'][] = [
+                        'label' => $season->getLabel(),
+                        'season_start' => $season->getSeasonStart(),
+                        'season_end' => $season->getSeasonEnd(),
+                        'pricePerNight' => $price->getPricePerNight(),
+                    ];
+                }
+
+
         return $this->render('admin/reservation/show.html.twig', [
             'reservation' => $reservation,
+            'rental' => $rental,
 
         ]);
     }
