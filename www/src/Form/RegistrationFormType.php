@@ -13,14 +13,31 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add('email', TextType::class, [
+                'label' => 'Adresse email',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Merci d\'entrer votre adresse email',
+                    ]),
+                    new Length([
+                        'max' => 255,
+                        'maxMessage' => 'Votre adresse email doit comporter au maximum {{ limit }} caractères',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/',
+                        'message' => 'Merci d\'entrer une adresse email valide',
+                    ]),
+                ],
+            ])
             ->add('plainPassword', PasswordType::class, [
+                'label' => 'Mot de passe',
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
@@ -35,9 +52,14 @@ class RegistrationFormType extends AbstractType
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
-                ],
-            ])
+                    new Regex([
+                        'pattern' => '/^(?=.*[0-9])(?=.*[\W]).+$/', // Au moins un chiffre et un caractère spécial
+                        'message' => 'Votre mot de passe doit comporter au minimum un caractère spécial et un chiffre',
+                    ]),
+                    ]
+                ])
             ->add('firstname', TextType::class, [
+                'label' => 'Prénom',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Merci d\'entrer votre prénom',
@@ -50,6 +72,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('lastname', TextType::class, [
+                'label' => 'Nom de famille',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Merci d\'entrer votre nom',
@@ -62,6 +85,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('date_of_birth', DateType::class, [
+                'label' => 'Date de naissance',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Merci d\'entrer votre date de naissance',
@@ -71,6 +95,7 @@ class RegistrationFormType extends AbstractType
                 'format' => 'yyyy-MM-dd',
             ])
             ->add('username', TextType::class, [
+                'label' => 'Nom d\'utilisateur',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Merci d\'entrer votre nom d\'utilisateur',
@@ -83,6 +108,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('phone', TextType::class, [
+                'label' => 'Téléphone',
                 'required' => false,
                 'constraints' => [
                     new Length([
@@ -94,6 +120,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('address', TextType::class, [
+                'label' => 'Adresse',
                 'required' => false,
                 'constraints' => [
                     new Length([
