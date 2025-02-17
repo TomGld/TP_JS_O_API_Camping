@@ -57,6 +57,21 @@
     </div>
 
 
+    {# seasons #}
+    <div style="border: 1px solid white; padding: 5px; border-radius: 5px;">
+        <div class="form-group">
+            {{form_label(form.season, 'Saison :')}}
+            {{form_widget(form.season, { 'attr': {'class':'form-control'} })}}
+            {{form_errors(form.season)}}
+
+            {# Price #}
+            {{form_label(form.pricePerNight, 'Prix /nuit :')}}
+            {{form_widget(form.pricePerNight, { 'attr': {'class':'form-control'} })}}
+            {{form_errors(form.pricePerNight)}}
+        </div>
+    </div>
+
+
 
     {{ form_widget(form) }}
 

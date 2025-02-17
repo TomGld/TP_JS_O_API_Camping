@@ -4,11 +4,13 @@ namespace App\Form;
 
 use App\Entity\Equipment;
 use App\Entity\Rental;
+use App\Entity\Season;
 use App\Entity\TypeRental;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -101,6 +103,22 @@ class RentalType extends AbstractType
             'choice_label' => 'label',
             'multiple' => true,
             'expanded' => true, // This will render checkboxes
+            ])
+
+            //Ajout liaison avec l'entité season et price
+            ->add('pricePerNight', NumberType::class, [
+                'mapped' => false,
+                'required' => true,
+                'label' => 'Prix par nuit'
+            ])
+            ->add('season', EntityType::class, [
+                'class' => Season::class,
+                'choice_label' => function (Season $season) {
+                    return sprintf('%s (%s - %s)', $season->getLabel(), $season->getSeasonStart()->format('d/m/Y'), $season->getSeasonEnd()->format('d/m/Y'));
+                },
+                'mapped' => false,
+                'required' => true,
+                'label' => 'Saison'
             ])
         ;
     }

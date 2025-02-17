@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Price;
 use App\Entity\Rental;
 use App\Form\RentalType;
 use App\Repository\RentalRepository;
@@ -57,6 +58,16 @@ final class AdminRentalController extends AbstractController
                 ]);
             }
 
+            //Traitement du price
+            $pricePerNight = $form->get('pricePerNight')->getData();
+            $season = $form->get('season')->getData();
+
+            $price = new Price();
+            $price->setPricePerNight($pricePerNight);
+            $price->setSeason($season);
+            $price->setRental($rental);
+
+            $entityManager->persist($price);
             $entityManager->persist($rental);
             $entityManager->flush();
 
@@ -146,6 +157,26 @@ final class AdminRentalController extends AbstractController
             $rental->setImage($newFilename);
             }
 
+            //Traitement du price
+            $pricePerNight = $form->get('pricePerNight')->getData();
+            $season = $form->get('season')->getData();
+
+            // Vérifier si un prix existe déjà pour cette saison et ce bien
+            $price = $entityManager->getRepository(Price::class)->findOneBy([
+                'rental' => $rental,
+                'season' => $season,
+            ]);
+
+            if (!$price) {
+                $price = new Price();
+                $price->setRental($rental);
+                $price->setSeason($season);
+            }
+
+            $price->setPricePerNight($pricePerNight);
+
+            $entityManager->persist($price);
+            $entityManager->persist($rental);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_admin_rental_index', [], Response::HTTP_SEE_OTHER);

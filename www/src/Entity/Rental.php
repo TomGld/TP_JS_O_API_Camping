@@ -56,6 +56,7 @@ class Rental
     #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'rentals')]
     private Collection $equipments;
 
+    private $price;
 
     public function __construct()
     {
@@ -235,6 +236,23 @@ class Rental
     public function removeEquipment(Equipment $equipment): static
     {
         $this->equipments->removeElement($equipment);
+
+        return $this;
+    }
+
+    public function getPrice(): ?Price
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?Price $price): self
+    {
+        // set the owning side of the relation if necessary
+        if ($price->getRental() !== $this) {
+            $price->setRental($this);
+        }
+
+        $this->price = $price;
 
         return $this;
     }
