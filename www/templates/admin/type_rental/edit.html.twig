@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit TypeRental{% endblock %}
+
+{% block body %}
+	<div class="game-form-container">
+        <h1>Éditer "{{type_rental.label}}"</h1>
+
+        {{ include('admin/type_rental/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+        <div class="action-buttons">
+            <a href="{{ path('app_type_rental_index') }}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> 
+            Retour à la liste</a>
+        </div>
+    </div>
+
+{% endblock %}

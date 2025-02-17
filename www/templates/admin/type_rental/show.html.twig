@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeRental{% endblock %}
+
+{% block body %}
+    <h1>Type de location :</h1>
+    <h2>{{type_rental.label}}</h2>
+	<div class="game-list-container">
+        <table class="game-table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ type_rental.label }}</td>
+                </tr>
+            </tbody>
+        </table>
+            <div class="action-buttons">
+                <div>
+                    <a href="{{ path('app_type_rental_edit', {'id': type_rental.id}) }}" class="btn btn-edit">Éditer</a>
+                </div>
+
+                <div>
+                    <a href="{{path('app_type_rental_index')}}" class="btn btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Retour à la liste
+                    </a>
+                </div>
+            </div>
+
+    </div>
+
+{% endblock %}

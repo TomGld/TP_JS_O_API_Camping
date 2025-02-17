@@ -1,0 +1,15 @@
+{{ form_start(form, { 'attr': {'class':'game-form'} }) }}
+
+    <div class="form-group">
+        {{form_label(form.label, 'Titre')}}
+        {{form_widget(form.label, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.label)}}
+    </div>
+
+    {{ form_widget(form) }}
+
+    <button class="btn-submit" type="submit">
+        <i class="fas fa-save"></i>
+        {{button_label|default('Enregistrer')}}
+    </button>
+{{ form_end(form) }}

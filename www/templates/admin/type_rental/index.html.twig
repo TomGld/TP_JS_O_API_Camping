@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Type de locations - Accueil{% endblock %}
+
+{% block body %}
+    <h1>Type de locations - Accueil</h1>
+    <div class="game-list-container">
+
+        <a href="{{ path('app_type_rental_new') }}" class="add-game-btn">Créer un type de bien</a>
+        <table class="game-table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for type_rental in type_rentals %}
+                <tr>
+                    <td>{{ type_rental.label }}</td>
+                    <td>
+                        <div class="game-actions">
+                            <a href="{{ path('app_type_rental_show', {'id': type_rental.id}) }}" class="view-link">Voir</a>
+                            <a href="{{ path('app_type_rental_edit', {'id': type_rental.id}) }}" class="edit-link">Éditer</a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_type_rental_new') }}" class="add-game-btn">Créer un type de bien</a>
+    </div>
+{% endblock %}
