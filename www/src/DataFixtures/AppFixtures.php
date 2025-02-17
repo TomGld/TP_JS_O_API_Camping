@@ -39,13 +39,13 @@ class AppFixtures extends Fixture
     {
         $array_users = [
             [
-                'firstname' => 'Tom',
-                'lastname' => 'Ford',
-                'email' => 'tom.ford@tom.com',
-                'password' => 'tom123',
+                'firstname' => 'admin',
+                'lastname' => 'ADMIN',
+                'email' => 'admin@admin.com',
+                'password' => 'admin1234',
                 'date_of_birth' => '2006-02-10',
                 'roles' => ['ROLE_ADMIN'],
-                'username' => 'tomford',
+                'username' => 'adm',
                 'phone' => '0606060606',
                 'address' => '5 rue de la paix',
             ],
@@ -182,7 +182,7 @@ class AppFixtures extends Fixture
             $rental->setCapacity($value['capacity']);
             $rental->setNbrLocalization($value['nbr_localization']);
             $rental->setTypeRental($this->getReference('type_rental_' . $value['type_rental_id']));
-            $rental->setActive($value['isActive']);
+            $rental->setIsActive($value['isActive']);
             $rental->setImage($value['image']);
             $manager->persist($rental);
 
@@ -204,6 +204,11 @@ class AppFixtures extends Fixture
                 'season_start' => '2024-09-01',
                 'season_end' => '2024-06-30',
             ],
+            [
+                'label' => 'Février - Mars',
+                'season_start' => '2025-02-01',
+                'season_end' => '2025-03-31',
+            ],
         ];
 
         foreach ($array_season as $key => $value) {
@@ -224,11 +229,16 @@ class AppFixtures extends Fixture
             [
                 'rental_id' => 1,
                 'season_id' => 1,
-                'price_per_night' => 50,
+                'price_per_night' => 5,
             ],
             [
                 'rental_id' => 1,
                 'season_id' => 2,
+                'price_per_night' => 10,
+            ],
+            [
+                'rental_id' => 1,
+                'season_id' => 3,
                 'price_per_night' => 15,
             ],
         ];
@@ -255,9 +265,9 @@ class AppFixtures extends Fixture
                 'date_end' => '2021-07-20',
                 'nbr_adult' => 2,
                 'nbr_minor' => 0,
-                'status' => 'disponible',
+                'status' => 1,
                 'checked' => 1,
-                'applied_price_id' => 1,
+                'applied_price_total' => 250, // Exemple de prix total
             ],
             [
                 'rental_id' => 2,
@@ -266,9 +276,9 @@ class AppFixtures extends Fixture
                 'date_end' => '2024-07-20',
                 'nbr_adult' => 2,
                 'nbr_minor' => 2,
-                'status' => 'disponible',
+                'status' => 1,
                 'checked' => 0,
-                'applied_price_id' => 2,
+                'applied_price_total' => 75, // Exemple de prix total
             ],
         ];
 
@@ -282,7 +292,7 @@ class AppFixtures extends Fixture
             $reservation->setNbrMinor($value['nbr_minor']);
             $reservation->setStatus($value['status']);
             $reservation->setChecked($value['checked']);
-            $reservation->setAppliedPrice($this->getReference('price_' . $value['applied_price_id']));
+            $reservation->setAppliedPriceTotal($value['applied_price_total']);
             $manager->persist($reservation);
         }
     }

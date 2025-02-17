@@ -1,0 +1,70 @@
+{{ form_start(form, { 'attr': {'class':'game-form'} }) }}
+    {{ form_errors(form) }}
+
+    {# addflash pour récupérer les erreurs #}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+
+    {# type_rental #}
+    <div class="form-group">
+        {{form_label(form.typeRental, 'Type de bien')}}
+        {{form_widget(form.typeRental, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.typeRental)}}
+    </div>
+
+    {# Title #}
+    <div class="form-group">
+        {{form_label(form.title, 'Titre')}}
+        {{form_widget(form.title, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.title)}}
+    </div>
+    
+    {# description #}
+    <div class="form-group">
+        {{form_label(form.description, 'Description')}}
+        {{form_widget(form.description, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.description)}}
+    </div>
+    
+        {# capacity #}
+    <div class="form-group">
+        {{form_label(form.description, 'Capacité de la location en personnes')}}
+        {{form_widget(form.capacity, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.capacity)}}
+    </div>
+
+        {# nbr_localization #}
+    <div class="form-group">
+        {{form_label(form.nbrLocalization, 'Numéro d\'emplacement')}}
+        {{form_widget(form.nbrLocalization, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.nbrLocalization)}}
+    </div>
+
+        {# is_active #}
+    <div class="form-group">
+        {{form_label(form.isActive, 'Est en ligne ?')}}
+        {{form_widget(form.isActive, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.isActive)}}
+    </div>
+    
+        {# equipments #}
+    <div class="form-group">
+        {{form_label(form.equipments, 'Equipments :')}}
+        {{form_widget(form.equipments, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.equipments)}}
+    </div>
+
+
+
+    {{ form_widget(form) }}
+
+
+    <button class="btn-submit" type="submit">
+        <i class="fas fa-save"></i>
+        {{button_label|default('Enregistrer')}}
+    </button>
+
+    
+{{ form_end(form) }}

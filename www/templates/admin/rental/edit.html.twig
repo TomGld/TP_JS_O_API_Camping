@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Rental{% endblock %}
+
+{% block body %}
+	<div class="game-form-container">
+        <h1>Éditer une location</h1>
+        <h2>{{rental.title}}</h2>
+        <h2>Emplacement n° {{rental.nbrLocalization}}</h2>
+
+        {{ include('admin/rental/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+		<div class="action-buttons">
+            <a href="{{ path('app_admin_rental_index') }}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> 
+            Retour à la liste des locations
+        </div>
+    </div>
+
+{% endblock %}

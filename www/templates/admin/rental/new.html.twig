@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Rental{% endblock %}
+
+{% block body %}
+    <h1>Créer un bien</h1>
+
+    {# Afficher les messages flash d'erreur #}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+
+    {{ include('admin/rental/_form.html.twig', {form: form}) }}
+
+    <a href="{{ path('app_admin_rental_index') }}">Retour à la liste des locations</a>
+{% endblock %}

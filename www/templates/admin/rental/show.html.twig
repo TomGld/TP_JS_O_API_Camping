@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rental{% endblock %}
+
+{% block body %}
+    <h1>Rental</h1>
+    <div class="game-list-container">
+        <table class="game-table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Capacité en personne(s)</th>
+                    <th>Emplacement</th>
+                    <th>En ligne</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ rental.title }}</td>
+                    <td>{{ rental.description }}</td>
+                    <td>{{ rental.capacity }}</td>
+                    <td>{{ rental.nbrLocalization }}</td>
+                    <td>{{ rental.isActive ? 'Oui' : 'Non' }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="action-buttons">
+        <div>
+            <a href="{{ path('app_admin_rental_edit', {'id': rental.id}) }}" class="btn btn-edit">Éditer</a>
+        </div>
+
+        <div>
+            <a href="{{path('app_admin_rental_index')}}" class="btn btn-back">
+                <i class="fas fa-arrow-left"></i> Retour à la liste des réservations</a>
+        </div>
+    </div>
+
+    {# Affichage du bien #}
+    {% include "components/_detail_card.html.twig" %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locations - Accueil{% endblock %}
+
+{% block body %}
+    <div class="game-list-container">
+        <h1>Locations - Accueil</h1>
+
+        
+        <div style="text-align: center;">
+            <a href="{{ path('app_admin_rental_new') }}" class="add-game-btn">Créer une location</a>
+        </div>
+        <table class="game-table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Capacité en personne(s)</th>
+                    <th>Emplacement</th>
+                    <th>En ligne</th>
+                    <th>Image</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for rental in rentals %}
+                <tr>
+                    <td>{{ rental.title }}</td>
+                    <td>{{ rental.description }}</td>
+                    <td>{{ rental.capacity }}</td>
+                    <td>{{ rental.nbrLocalization }}</td>
+                    <td>{{ rental.isActive ? 'Oui' : 'Non' }}</td>
+                    <td>
+                        <div class="game-detail-image">
+                            <img src="{{ asset('camping/location_images/' ~ rental.image) }}" alt="{{ rental.title }}" style="max-width: 150px; max-height: 150px; border-radius: 10px;">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="game-actions">
+                            <a href="{{ path('app_admin_rental_show', {'id': rental.id}) }}" class="view-link">Détail</a>
+                            <a href="{{ path('app_admin_rental_edit', {'id': rental.id}) }}" class="view-link">Éditer</a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="text-align: center;">
+            <a href="{{ path('app_admin_rental_new') }}" class="add-game-btn">Créer une location</a>
+        </div>
+    </div>
+
+{% endblock %}
