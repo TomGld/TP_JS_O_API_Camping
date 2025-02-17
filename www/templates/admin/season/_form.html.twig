@@ -1,0 +1,42 @@
+{{ form_start(form, { 'attr': {'class':'game-form'} }) }}
+
+    {# addflash pour récupérer les erreurs #}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    
+    {# label #}
+    <div class="form-group">
+        {{form_label(form.label, 'Titre de la saison')}}
+        {{form_widget(form.label, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.label)}}
+    </div>
+
+
+    {# season_start #}
+    <div class="form-group">
+        {{form_label(form.season_start, 'Date de début de la saison')}}
+        {{form_widget(form.season_start, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.season_start)}}
+    </div>
+
+
+    {# season_end #}
+    <div class="form-group">
+        {{form_label(form.season_end, 'Date de fin de la saison')}}
+        {{form_widget(form.season_end, { 'attr': {'class':'form-control'} })}}
+        {{form_errors(form.season_end)}}
+    </div>
+
+
+
+    {{ form_widget(form) }}
+
+    <button class="btn-submit" type="submit">
+        <i class="fas fa-save"></i>
+        {{button_label|default('Enregistrer')}}
+    </button>
+
+
+{{ form_end(form) }}

@@ -7,11 +7,20 @@
 	<h1>Dashboard</h1>
 
 	<div class="action-buttons">
-		<a href="{{ path('app_admin_reservation_index') }}" class="btn btn-edit">Voir les réservations</a>
 
 
+		{# Locations #}
 		<a href="{{ path('app_admin_rental_index') }}" class="btn btn-edit">Voir les locations</a>
 
+		{# Reservations #}
+		<a href="{{ path('app_admin_reservation_index') }}" class="btn btn-edit">Voir les réservations</a>
+		
+		{# Type Rental #}
+		<a href="{{ path('app_type_rental_index') }}" class="btn btn-edit">Voir les types de locations</a>
+
+
+		{# Type Rental #}
+		<a href="{{ path('app_season_index') }}" class="btn btn-edit">Voir les saisons</a>
 
 
 	</div>

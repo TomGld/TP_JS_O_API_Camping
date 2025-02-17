@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Season{% endblock %}
+
+{% block body %}
+	<div class="game-form-container">
+        <h1>Éditer une saison</h1>
+
+        {{ include('admin/season/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+        <div class="action-buttons">
+            <a href="{{ path('app_season_index') }}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> 
+            Retour à la liste
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -13,5 +13,10 @@
 
     {{ include('admin/rental/_form.html.twig', {form: form}) }}
 
-    <a href="{{ path('app_admin_rental_index') }}">Retour à la liste</a>
+    <div class="action-buttons">
+        <a href="{{ path('app_admin_rental_index') }}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i>
+            Retour à la liste
+        </a>
+    </div>
 {% endblock %}

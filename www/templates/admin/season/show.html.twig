@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Season{% endblock %}
+
+{% block body %}
+    <h1>Saison {{season.label}}</h1>
+    <div class="game-list-container">
+        <table class="game-table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Début de la saison</th>
+                    <th>Fin de la saison</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ season.label }}</td>
+                    <td>{{ season.seasonStart ? season.seasonStart|date('Y-m-d') : '' }}</td>
+                    <td>{{ season.seasonEnd ? season.seasonEnd|date('Y-m-d') : '' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="action-buttons">
+        <div>
+            <a href="{{ path('app_season_edit', {'id': season.id}) }}" class="btn btn-edit">Éditer</a>
+        </div>
+
+        <div>
+            <a href="{{ path('app_season_index') }}" class="btn btn-back">
+                <i class="fas fa-arrow-left"></i> Retour à la liste</a>
+        </div>
+    </div>
+
+{% endblock %}

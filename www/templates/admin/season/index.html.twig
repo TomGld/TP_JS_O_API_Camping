@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Saison - Accueil{% endblock %}
+
+{% block body %}
+    <div class="game-list-container">
+        <h1>Saison - Accueil</h1>
+
+        <div style="text-align: center;">
+            <a href="{{ path('app_season_new') }}" class="add-game-btn">Créer une saison</a>
+        </div>
+        <table class="game-table">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Début de la saison</th>
+                    <th>Fin de la saison</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for season in seasons %}
+                <tr>
+                    <td>{{ season.label }}</td>
+                    <td>{{ season.seasonStart ? season.seasonStart|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ season.seasonEnd ? season.seasonEnd|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <div class="game-actions">
+                            <a href="{{ path('app_season_show', {'id': season.id}) }}" class="view-link">Voir</a>
+                            <a href="{{ path('app_season_edit', {'id': season.id}) }}" class="view-link">Éditer</a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="text-align: center;">
+            <a href="{{ path('app_season_new') }}" class="add-game-btn">Créer une saison</a>
+        </div>
+    </div>
+
+{% endblock %}
