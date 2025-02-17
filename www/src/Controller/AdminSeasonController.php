@@ -23,15 +23,21 @@ final class AdminSeasonController extends AbstractController
     }
 
     #[Route('/new', name: 'app_season_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SeasonRepository $seasonRepository): Response
     {
         $season = new Season();
         $form = $this->createForm(SeasonType::class, $season);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($season->getSeasonStart() > $season->getSeasonEnd()) {
+            $overlappingSeasons = $seasonRepository->findOverlappingSeasons($season->getSeasonStart(), $season->getSeasonEnd());
+
+            if (!empty($overlappingSeasons)) {
+                $this->addFlash('error', 'Les dates sont déjà occupées pour une autre saison.');
+            } elseif ($season->getSeasonStart() > $season->getSeasonEnd()) {
                 $this->addFlash('error', 'La date de départ doit être inférieure à la date de fin.');
+            } elseif ($season->getSeasonStart() == $season->getSeasonEnd()) {
+                $this->addFlash('error', 'Les dates de début et de fin ne peuvent pas être identiques.');
             } else {
                 $entityManager->persist($season);
                 $entityManager->flush();
@@ -55,14 +61,20 @@ final class AdminSeasonController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_season_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Season $season, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Season $season, EntityManagerInterface $entityManager, SeasonRepository $seasonRepository): Response
     {
         $form = $this->createForm(SeasonType::class, $season);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($season->getSeasonStart() > $season->getSeasonEnd()) {
+            $overlappingSeasons = $seasonRepository->findOverlappingSeasons($season->getSeasonStart(), $season->getSeasonEnd(), $season->getId());
+
+            if (!empty($overlappingSeasons)) {
+                $this->addFlash('error', 'Les dates sont déjà occupées pour une autre saison.');
+            } elseif ($season->getSeasonStart() > $season->getSeasonEnd()) {
                 $this->addFlash('error', 'La date de départ doit être inférieure à la date de fin.');
+            } elseif ($season->getSeasonStart() == $season->getSeasonEnd()) {
+                $this->addFlash('error', 'Les dates de début et de fin ne peuvent pas être identiques.');
             } else {
                 $entityManager->flush();
 
