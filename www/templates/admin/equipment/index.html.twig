@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Équipements - Accueil{% endblock %}
+
+{% block body %}
+
+<div class="game-list-container">
+    <h1>Équipements - Accueil</h1>
+
+
+    <table class="game-table">
+        <thead>
+            <tr>
+                <th>Label</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for equipment in equipment %}
+            <tr>
+                <td>{{ equipment.label }}</td>
+                <td>
+                    <div class="game-actions">
+                        <a href="{{ path('app_equipment_show', {'id': equipment.id}) }}" class="view-link">Détail</a>
+                        <a href="{{ path('app_equipment_edit', {'id': equipment.id}) }}" class="edit-link">Éditer</a>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="text-align: center;">
+        <a href="{{ path('app_equipment_new') }}" class="add-game-btn">Créer un équipment</a>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

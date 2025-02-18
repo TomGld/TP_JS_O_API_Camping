@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Equipment{% endblock %}
+
+{% block body %}
+    <div class="game-form-container">
+
+        <h1>Edit Equipment</h1>
+
+        {{ include('admin/equipment/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+
+        <div class="action-buttons">
+
+            <div>
+                <a href="{{path('app_equipment_index')}}" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i>Retour à la liste</a>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

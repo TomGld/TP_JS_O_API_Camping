@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Equipment{% endblock %}
+
+{% block body %}
+<div class="game-list-container">
+
+    <h1>Équipement</h1>
+
+    <table class="game-table">
+        <thead>
+            <tr>
+                <th>Label</th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>{{ equipment.label }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="action-buttons">
+
+        <div>
+            <a href="{{path('app_equipment_index')}}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i>Retour à la liste</a>
+        </div>
+
+
+        <a href="{{ path('app_equipment_edit', {'id': equipment.id}) }}" class="btn btn-edit">Éditer</a>
+    </div>
+</div>
+
+{% endblock %}
