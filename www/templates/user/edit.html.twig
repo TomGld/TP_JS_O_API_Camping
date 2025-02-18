@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Édition User{% endblock %}
+
+{% block body %}
+<h1>Éditer un compte utilisateur</h1>
+
+
+    {{ include('user/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+
+    <div class="action-buttons">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_user_index') }}" class="btn btn-back">
+                <i class="fas fa-arrow-left"></i>
+                Retour à la liste
+            </a>
+        {% else %}
+            <a href="{{ path('app_home') }}" class="btn btn-back">
+                <i class="fas fa-arrow-left"></i>
+                Retour à l'accueil
+            </a>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

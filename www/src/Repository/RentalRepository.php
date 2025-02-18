@@ -115,7 +115,7 @@ class RentalRepository extends ServiceEntityRepository
 
     /**
      * Méthode pour retourner un rental, son image, ses prices et ses seasons, son typeRental, ses equipments
-
+     * @param int $id
      */
     public function findRentalInfoById($id)
     {
