@@ -6,6 +6,7 @@ use App\Entity\Rental;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\ReservationRepository;
+use App\Repository\SeasonRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,10 +17,44 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/reservation')]
 final class AdminReservationController extends AbstractController
 {
+
+    //Créer la méthode pour calculer le prix (en fonction des dates dans seasons et price_per_night dans price) entrées par l'utilisateur dans le formulaire.
+    public function calculatePrice(\DateTime $dateStart, \DateTime $dateEnd, $seasons)
+    {
+        $price = 0;
+        $dateStart = $dateStart->setTime(0, 0, 0);
+        $dateEnd = $dateEnd->setTime(0, 0, 0);
+
+        // Exclure le dernier jour pour le calcul du prix
+        $dateEndForPrice = (clone $dateEnd)->modify('-1 day');
+
+        foreach ($seasons as $season) {
+            $seasonStart = $season['date_start'];
+            $seasonEnd = $season['date_end'];
+
+            // Si la période de réservation est incluse dans une saison
+            if ($dateStart >= $seasonStart && $dateEndForPrice <= $seasonEnd) {
+                $price += $season['pricePerNight'] * ($dateStart->diff($dateEndForPrice)->days + 1);
+                // Si la période de réservation commence et se termine en dehors d'une saison
+            } elseif ($dateStart >= $seasonStart && $dateStart <= $seasonEnd && $dateEndForPrice >= $seasonEnd) {
+                $price += $season['pricePerNight'] * ($dateStart->diff($seasonEnd)->days + 1);
+                // Si la période de réservation commence et se termine en dehors d'une saison
+            } elseif ($dateStart <= $seasonStart && $dateEndForPrice >= $seasonStart && $dateEndForPrice <= $seasonEnd) {
+                $price += $season['pricePerNight'] * ($seasonStart->diff($dateEndForPrice)->days + 1);
+                // Si la période de réservation commence et se termine en dehors d'une saison
+            } elseif ($dateStart <= $seasonStart && $dateEndForPrice >= $seasonEnd) {
+                $price += $season['pricePerNight'] * ($seasonStart->diff($seasonEnd)->days + 1);
+            }
+        }
+
+        return $price;
+    }
+
     #[Route(name: 'app_admin_reservation_index', methods: ['GET'])]
     public function index(ReservationRepository $reservationRepository): Response
     {
         return $this->render('admin/reservation/index.html.twig', [
+            // dd($reservationRepository->findAll()),
             'reservations' => $reservationRepository->findAll(),
         ]);
     }
@@ -31,55 +66,131 @@ final class AdminReservationController extends AbstractController
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
-        //Récupérer le rental par l'id dans l'url
-        $rentalId = $reservationRepository->find($request->get('id'));
-        //Récupérer les données du rental par l'id
+        // Récupération du rental
+        $rentalId = $request->get('id');
         $rental = $entityManager->getRepository(Rental::class)->findRentalInfoById($rentalId);
+        if (!$rental) {
+            throw $this->createNotFoundException('Location non trouvée.');
+        }
 
-
-        //Extraire les seasons et les equipment
+        // Traitement du rental
         $seasons = [];
         $equipments = [];
         foreach ($rental as $rental) {
             $seasons[] = [
-            'label' => $rental['season_label'],
-            'date_start' => $rental['season_start'],
-            'date_end' => $rental['season_end']
+                'label' => $rental['season_label'],
+                'date_start' => $rental['season_start'],
+                'date_end' => $rental['season_end'],
+                'pricePerNight' => $rental['pricePerNight']
             ];
             $equipments[] = $rental['rental_equipment_label'];
         }
 
-        //Supprimer season_label, season_start, season_end de $rental
         unset($rental['season_label']);
         unset($rental['season_start']);
         unset($rental['season_end']);
         unset($rental['rental_equipment_label']);
 
-        //Supprimer les doublons dans les équipments et les seasons
+
         $equipments = array_values(array_unique($equipments));
         $seasons = array_map("unserialize", array_unique(array_map("serialize", $seasons)));
 
-        //Ajouter les seasons et les equipment dans le $rental
         $rental['seasons'] = $seasons;
         $rental['equipments'] = $equipments;
 
+        
+        //Initialiser la variable $calculatedPrice
+        $calculatedPrice = null;
 
-        //AddFlash(nom du flach, message)
-        // rediret to route
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($reservation);
-            $entityManager->flush();
+        if ($form->isSubmitted()) {
+            if ($request->request->get('action') === 'calculate') {
 
-            return $this->redirectToRoute('app_admin_reservation_index', [], Response::HTTP_SEE_OTHER);
+                $dateStart = $reservation->getDateStart();
+                $dateEnd = $reservation->getDateEnd();
+
+                //vérification des dates de début et de fin
+                if ($dateStart >= $dateEnd) {
+                    $this->addFlash('danger', 'La date de début doit être inférieure à la date de fin.');
+                    return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                }
+
+                if($dateStart < new \DateTime()) {
+                    $this->addFlash('danger', 'La date de début doit être supérieure à la date actuelle.');
+                    return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                }
+
+                // Vérifiez que les dates ne sont pas nulles
+                if ($dateStart && $dateEnd) {
+                    $calculatedPrice = $this->calculatePrice($dateStart, $dateEnd, $rental['seasons']);
+                } else {
+                    $this->addFlash('danger', 'Veuillez entrer des dates valides.');
+                }
+                
+            } elseif ($form->isValid()) {
+                //Prendre les dates soumises par l'utilisateur et appeler la methode calculatePrice pour obtenir le prix total et le stocker dans la bdd sous applied_price_total
+                $calculatedPrice = $this->calculatePrice($reservation->getDateStart(), $reservation->getDateEnd(), $rental['seasons']);
+                $reservation->setAppliedPriceTotal($calculatedPrice);
+
+                $nbrAdults = $reservation->getNbrAdult();
+                $nbrMinors = $reservation->getNbrMinor();
+                $totalGuests = $nbrAdults + $nbrMinors;
+
+                if ($nbrAdults < 1) {
+                    $this->addFlash('danger', 'Il doit y avoir au moins un adulte.');
+                    return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                }
+
+                if ($nbrMinors < 0) {
+                    $this->addFlash('danger', 'Le nombre de mineurs doit être positif ou nul.');
+                    return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                }
+
+                if ($totalGuests > $rental['capacity']) {
+                    $this->addFlash('danger', 'Le nombre total de personnes ne doit pas dépasser la capacité de la location.');
+                    return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                }
+
+                if ($reservation->getDateStart() >= $reservation->getDateEnd()) {
+                    $this->addFlash('danger', 'La date de début doit être inférieure à la date de fin.');
+                    return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                }
+
+                if ($reservation->getDateStart() < new \DateTime()) {
+                    $this->addFlash('danger', 'La date de début doit être supérieure à la date actuelle.');
+                    return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                }
+
+                    
+
+                $reservations = $reservationRepository->findReservationByRentalId($rentalId);
+                foreach ($reservations as $res) {
+                    if ($reservation->getDateStart() >= $res->getDateStart() && $reservation->getDateStart() <= $res->getDateEnd()) {
+                        $this->addFlash('danger', 'La date de début n\'est pas disponible.');
+                        return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                    }
+                    if ($reservation->getDateEnd() >= $res->getDateStart() && $reservation->getDateEnd() <= $res->getDateEnd()) {
+                        $this->addFlash('danger', 'La date de fin n\'est pas disponible.');
+                        return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
+                    }
+                }
+
+                $reservation->setRental($entityManager->getRepository(Rental::class)->find($rentalId));
+                $entityManager->persist($reservation);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_admin_reservation_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('admin/reservation/new.html.twig', [
             'reservation' => $reservation,
             'rental' => $rental,
             'form' => $form,
+            'calculatedPrice' => $calculatedPrice,
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_admin_reservation_show', methods: ['GET'])]
     public function show(Reservation $reservation): Response
@@ -96,7 +207,7 @@ final class AdminReservationController extends AbstractController
             'isActive' => $reservation->getRental()->IsActive(),
             'image' => $reservation->getRental()->getImage(),
             'equipments' => $reservation->getRental()->getEquipments()->toArray(),
-            'price' => $reservation->getAppliedPrice()->getPricePerNight(),
+            'price' => $reservation->getAppliedPriceTotal(),
             'seasons' => [],
         ];
 
@@ -139,20 +250,86 @@ final class AdminReservationController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_admin_reservation_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager, ReservationRepository $reservationRepository): Response
     {
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        // Récupération du rental
+        $rentalId = $reservation->getRental()->getId();
+        $rental = $entityManager->getRepository(Rental::class)->findRentalInfoById($rentalId);
+        if (!$rental) {
+            throw $this->createNotFoundException('Location non trouvée.');
+        }
+
+        // Traitement du rental
+        $seasons = [];
+        foreach ($rental as $rental) {
+            $seasons[] = [
+                'label' => $rental['season_label'],
+                'date_start' => $rental['season_start'],
+                'date_end' => $rental['season_end'],
+                'pricePerNight' => $rental['pricePerNight']
+            ];
+        }
+
+        $seasons = array_map("unserialize", array_unique(array_map("serialize", $seasons)));
+
+        //Initialiser la variable $calculatedPrice
+        $calculatedPrice = null;
+
+        if ($form->isSubmitted()) {
+            if ($request->request->get('action') === 'calculate') {
+
+            $dateStart = $reservation->getDateStart();
+            $dateEnd = $reservation->getDateEnd();
+
+            //vérification des dates de début et de fin
+            if ($dateStart >= $dateEnd) {
+                $this->addFlash('danger', 'La date de début doit être inférieure à la date de fin.');
+                return $this->redirectToRoute('app_admin_reservation_edit', ['id' => $reservation->getId()]);
+            }
+
+            if($dateStart < new \DateTime()) {
+                $this->addFlash('danger', 'La date de début doit être supérieure à la date actuelle.');
+                return $this->redirectToRoute('app_admin_reservation_edit', ['id' => $reservation->getId()]);
+            }
+
+            // Vérifiez que les dates ne sont pas nulles
+            if ($dateStart && $dateEnd) {
+                $calculatedPrice = $this->calculatePrice($dateStart, $dateEnd, $seasons);
+            } else {
+                $this->addFlash('danger', 'Veuillez entrer des dates valides.');
+            }
+            
+            if ($dateStart >= $dateEnd) {
+                $this->addFlash('danger', 'La date de début doit être inférieure à la date de fin.');
+                return $this->redirectToRoute('app_admin_reservation_edit', ['id' => $reservation->getId()]);
+            }
+
+            if($dateStart < new \DateTime()) {
+                $this->addFlash('danger', 'La date de début doit être supérieure à la date actuelle.');
+                return $this->redirectToRoute('app_admin_reservation_edit', ['id' => $reservation->getId()]);
+            
+            } else {
+                $this->addFlash('danger', 'Veuillez entrer des dates valides.');
+            }
+            
+            } elseif ($form->isValid()) {
+            //Prendre les dates soumises par l'utilisateur et appeler la methode calculatePrice pour obtenir le prix total et le stocker dans la bdd sous applied_price_total
+            $calculatedPrice = $this->calculatePrice($reservation->getDateStart(), $reservation->getDateEnd(), $seasons);
+            $reservation->setAppliedPriceTotal($calculatedPrice);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_admin_reservation_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('admin/reservation/edit.html.twig', [
             'reservation' => $reservation,
             'form' => $form,
+            'calculatedPrice' => $calculatedPrice,
         ]);
     }
 

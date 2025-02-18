@@ -53,13 +53,6 @@ class ReservationType extends AbstractType
                     'Non' => 2,
                 ],
             ])
-            ->add('rental', EntityType::class, [
-                'class' => Rental::class,
-                'choice_label' => function ($rental) {
-                    return ' N°' . $rental->getNbrLocalization() . ', ' . $rental->getTitle();
-                },
-                'attr' => ['class' => 'form-control'],
-            ])
             ->add('renter', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => function ($user) {
@@ -67,11 +60,7 @@ class ReservationType extends AbstractType
                 },
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('appliedPrice', EntityType::class, [
-                'class' => Price::class,
-                'choice_label' => 'pricePerNight',
-                'attr' => ['class' => 'form-control'],
-            ])
+
         ;
     }
 

@@ -40,4 +40,15 @@ class ReservationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+    public function findReservationByRentalId($rentalId): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.rental = :rentalId')
+            ->setParameter('rentalId', $rentalId)
+            ->getQuery()
+            ->getResult();
+        
+    }
 }

@@ -40,9 +40,8 @@ class Reservation
     #[ORM\Column]
     private ?int $checked = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Price $appliedPrice = null;
+    #[ORM\Column]
+    private ?float $appliedPriceTotal = null;
 
     public function getId(): ?int
     {
@@ -145,14 +144,14 @@ class Reservation
         return $this;
     }
 
-    public function getAppliedPrice(): ?Price
+    public function getAppliedPriceTotal(): ?float
     {
-        return $this->appliedPrice;
+        return $this->appliedPriceTotal;
     }
 
-    public function setAppliedPrice(?Price $appliedPrice): static
+    public function setAppliedPriceTotal(float $appliedPriceTotal): static
     {
-        $this->appliedPrice = $appliedPrice;
+        $this->appliedPriceTotal = $appliedPriceTotal;
 
         return $this;
     }

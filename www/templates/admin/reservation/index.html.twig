@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reservation - Accueil{% endblock %}
+{% block title %}Reservations - Accueil{% endblock %}
 
 {% block body %}
-    <h1>Reservation - Accueil</h1>
+    <h1>Reservations - Accueil</h1>
 	<div class="game-list-container">
         <table class="game-table">
             <thead>
@@ -15,6 +15,7 @@
                     <th>Mineur(s)</th>
                     <th>Status</th>
                     <th>Checké</th>
+                    <th>Prix total</th>
                     <th>actions</th>
                 </tr>
             </thead>
@@ -49,6 +50,9 @@
                                 non
                             {% endif %}
                         </div>
+                    </td>
+                    <td style="text-align: center;">
+                        {{ reservation.appliedPriceTotal ? reservation.appliedPriceTotal ~ ' €': 'Non déclaré' }}
                     </td>
                     <td>
                         <div class="game-actions">

@@ -1,5 +1,5 @@
 {{ form_start(form, { 'attr': {'class':'game-form'} }) }}
-{{ form_errors(form) }}
+    {{ form_errors(form) }}
 
     {# dateStart #}
     <div class="form-group">
@@ -45,13 +45,6 @@
         {{form_errors(form.checked)}}
     </div>
 
-    {# Rental #}
-    <div class="form-group">
-        {{form_label(form.rental, 'Location concernée')}}
-        {{form_widget(form.rental, { 'attr': {'class':'form-control'} })}}
-        {{form_errors(form.rental)}}
-    </div>
-
     {# Renter #}
     <div class="form-group">
         {{form_label(form.renter, 'Locataire')}}
@@ -59,20 +52,32 @@
         {{form_errors(form.renter)}}
     </div>
 
-    {# Applied_Price #}
-    <div class="form-group">
-        {{form_label(form.appliedPrice, 'Prix appliqué')}}
-        {{form_widget(form.appliedPrice, { 'attr': {'class':'form-control'} })}}
-        {{form_errors(form.appliedPrice)}}
-    </div>
+    {# Boutton calculer le prix sans enregistrer en bdd #}
+    {# <button class="btn-calculate" type="submit" name="action" value="calculate">
+        <i class="fas fa-calculator"></i> Calculer
+    </button> #}
 
-    
+    <button type="submit" name="action" value="calculate" class="btn btn-primary">Calculer le prix</button>
+
+    {% if calculatedPrice is not null %}
+        <div class="alert alert-info" style="margin-top: 10px;">
+            Le prix total de la réservation est de
+            {{ calculatedPrice }}
+            €.
+        </div>
+    {% endif %}
+
 
 
     {{ form_widget(form) }}
 
     <button class="btn-submit" type="submit">
-	<i class="fas fa-save"></i>
-	{{button_label|default('Enregistrer')}}
-</button>
+        <i class="fas fa-save"></i>
+        {{button_label|default('Enregistrer')}}
+    </button>
+
+
+
 {{ form_end(form) }}
+
+

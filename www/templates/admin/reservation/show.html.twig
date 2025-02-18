@@ -12,40 +12,45 @@
 
         <table class="game-table">
             <thead>
-            <tr>
-                <th>Locataire</th>
-                <th>Date d'arrivée</th>
-                <th>Date de départ</th>
-                <th>Nombre d'adulte(s)</th>
-                <th>Nombre de mineur(s)</th>
-                <th>Status</th>
-                <th>Checké</th>
-            </tr>
+                <tr>
+                    <th>Locataire</th>
+                    <th>Date d'arrivée</th>
+                    <th>Date de départ</th>
+                    <th>Nombre d'adulte(s)</th>
+                    <th>Nombre de mineur(s)</th>
+                    <th>Status</th>
+                    <th>Checké</th>
+                    <th>Prix total</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>{{ reservation.renter.firstname }} {{ reservation.renter.lastname }}</td>
-                <td>{{ reservation.dateStart ? reservation.dateStart|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.dateEnd ? reservation.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.nbrAdult }}</td>
-                <td>{{ reservation.nbrMinor }}</td>
-                <td>
-                {% if reservation.status == 1 %}
-                    validée
-                {% elseif reservation.status == 2 %}
-                    annulée
-                {% elseif reservation.status == 3 %}
-                    en attente
-                {% endif %}
-                </td>
-                <td>
-                {% if reservation.checked == 1 %}
-                    oui
-                {% elseif reservation.checked == 2 %}
-                    non
-                {% endif %}
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ reservation.renter.firstname }} {{ reservation.renter.lastname }}</td>
+                    <td>{{ reservation.dateStart ? reservation.dateStart|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ reservation.dateEnd ? reservation.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ reservation.nbrAdult }}</td>
+                    <td>{{ reservation.nbrMinor }}</td>
+                    <td>
+                        {% if reservation.status == 1 %}
+                            validée
+                        {% elseif reservation.status == 2 %}
+                            annulée
+                        {% elseif reservation.status == 3 %}
+                            en attente
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if reservation.checked == 1 %}
+                            oui
+                        {% elseif reservation.checked == 2 %}
+                            non
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        {{ reservation.appliedPriceTotal ? reservation.appliedPriceTotal ~ ' €' : 'Non déclaré' }}
+                    </td>
+
+                </tr>
             </tbody>
         </table>
 
@@ -55,10 +60,10 @@
                 <a href="{{ path('app_admin_reservation_edit', {'id': reservation.id}) }}" class="btn btn-edit">Éditer</a>
             </div>
 
-                <div>
-                    <a href="{{path('app_admin_reservation_index')}}" class="btn btn-back">
-                        <i class="fas fa-arrow-left"></i> Retour à la liste des réservations</a>
-                </div>
+            <div>
+                <a href="{{path('app_admin_reservation_index')}}" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste</a>
+            </div>
         </div>
     </div>
 
