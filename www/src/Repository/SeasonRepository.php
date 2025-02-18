@@ -16,28 +16,22 @@ class SeasonRepository extends ServiceEntityRepository
         parent::__construct($registry, Season::class);
     }
 
-    //    /**
-    //     * @return Season[] Returns an array of Season objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findOverlappingSeasons(\DateTimeInterface $start, \DateTimeInterface $end, ?int $excludeId = null): array
+    {
+        $qb = $this->createQueryBuilder('s')
+        ->where('s.season_start < :end')
+        ->andWhere('s.season_end > :start')
+        ->setParameter('start', $start)
+            ->setParameter('end', $end);
 
-    //    public function findOneBySomeField($value): ?Season
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($excludeId) {
+            $qb->andWhere('s.id != :excludeId')
+            ->setParameter('excludeId', $excludeId);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+
 }
