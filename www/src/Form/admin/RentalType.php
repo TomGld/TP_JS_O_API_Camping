@@ -108,7 +108,7 @@ class RentalType extends AbstractType
             //Ajout liaison avec l'entité season et price
             ->add('pricePerNight', NumberType::class, [
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'label' => 'Prix par nuit'
             ])
             ->add('season', EntityType::class, [
@@ -117,7 +117,7 @@ class RentalType extends AbstractType
                     return sprintf('%s (%s - %s)', $season->getLabel(), $season->getSeasonStart()->format('d/m/Y'), $season->getSeasonEnd()->format('d/m/Y'));
                 },
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'label' => 'Saison'
             ])
         ;
