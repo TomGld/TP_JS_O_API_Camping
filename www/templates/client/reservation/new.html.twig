@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reservation{% endblock %}
+
+{% block body %}
+    <div class="game-form-container">
+
+        <h1>Créer une réservation pour la location {{rental.title}}, <br> emplacement N° {{rental.nbrLocalization}}</h1>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert {{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+
+        {% if rental.isActive == 0 %}
+            <div>
+                <h2>Cette location n'est pas disponible, merci de choisir une autre location.</h2>
+            </div>
+
+        {% endif %}
+        
+        {{ include('client/reservation/_form.html.twig', { 'is_edit': false }) }}
+
+        <a href="{{ path('app_client_reservation_index') }}">back to list</a>
+    </div>
+{% endblock %}

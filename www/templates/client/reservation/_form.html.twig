@@ -1,0 +1,80 @@
+{{ form_start(form, { 'attr': {'class':'game-form'} }) }}
+{{ form_errors(form) }}
+
+
+    {% if is_edit == false %}
+
+        {# dateStart #}
+        <div class="form-group">
+            {{form_label(form.dateStart, 'Date de d\'arrivée')}}
+            {{form_widget(form.dateStart, { 'attr': {'class':'form-control'} })}}
+            {{form_errors(form.dateStart)}}
+        </div>
+
+        {# dateEnd #}
+        <div class="form-group">
+            {{form_label(form.dateEnd, 'Date de départ')}}
+            {{form_widget(form.dateEnd, { 'attr': {'class':'form-control'} })}}
+            {{form_errors(form.dateEnd)}}
+        </div>
+
+
+        {# nbrAdults #}
+        <div class="form-group">
+            {{form_label(form.nbrAdult, 'Nombre d\'adultes')}}
+            {{form_widget(form.nbrAdult, { 'attr': {'class':'form-control'} })}}
+            {{form_errors(form.nbrAdult)}}
+        </div>
+
+        {# nbrMinors #}
+        <div class="form-group">
+            {{form_label(form.nbrMinor, 'Nombre de mineurs')}}
+            {{form_widget(form.nbrMinor, { 'attr': {'class':'form-control'} })}}
+            {{form_errors(form.nbrMinor)}}
+        </div>
+
+        {# Boutton calculer le prix sans enregistrer en bdd #}
+
+        <button type="submit" name="action" value="calculate" class="btn btn-primary">Calculer le prix</button>
+
+        {% if calculatedPrice is not null %}
+            <div class="alert alert-info" style="margin-top: 10px;">
+                Le prix total de la réservation est de
+                {{ calculatedPrice }}
+                €.
+            </div>
+        {% endif %}
+
+
+    {% endif %}
+
+    {% if form.status is defined %}
+
+        {# dateStart #}
+        {% if form.status.vars.value == 2 %}
+
+            <div class="form-group">
+                {{form_label(form.status, 'Status')}}
+                {{form_widget(form.status, { 'attr': {'class':'form-control'} })}}
+                {{form_errors(form.status)}}
+            </div>
+
+            <div class="form-group">
+                <h2>Réservation annulée.</h2>
+            </div>
+
+        {% endif %}
+    {% endif %}
+
+
+
+    {{ form_widget(form) }}
+
+    <button class="btn-submit" type="submit">
+        <i class="fas fa-save"></i>
+        {{button_label|default('Enregistrer')}}
+    </button>
+
+
+{{ form_end(form) }}
+

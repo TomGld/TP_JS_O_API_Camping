@@ -28,6 +28,10 @@
 					{% endif %}
 					
 					<a class="dropdown-item" href="{{ path('app_user_show', {'id': app.user.id}) }}">Mon profil</a>
+						{% if is_granted('ROLE_USER') %}
+							<a class="dropdown-item" href="{{ path('app_client_reservation_index', {'id': app.user.id}) }}">Mes réservations</a>
+						{% endif %}
+
 					<a class="dropdown-item" href="{{path('app_logout')}}">Déconnexion</a>
 				{% else %}
 					<a class="dropdown-item" href="{{path('app_login')}}">Connexion</a>

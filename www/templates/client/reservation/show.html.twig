@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation{% endblock %}
+
+{% block body %}
+
+	<h1>Réservation n°
+		{{reservation.id}}</h1>
+	<div class="game-list-container">
+
+		<h2>{{ reservation.rental.title }}</h2>
+		<h2>Emplacement n°
+			{{reservation.rental.nbrLocalization}}</h2>
+
+		<table class="game-table">
+			<thead>
+				<tr>
+					<th>Date d'arrivée</th>
+					<th>Date de départ</th>
+					<th>Nombre d'adulte(s)</th>
+					<th>Nombre de mineur(s)</th>
+					<th>Status</th>
+					<th>Prix total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ reservation.dateStart ? reservation.dateStart|date('Y-m-d') : '' }}</td>
+					<td>{{ reservation.dateEnd ? reservation.dateEnd|date('Y-m-d') : '' }}</td>
+					<td>{{ reservation.nbrAdult }}</td>
+					<td>{{ reservation.nbrMinor }}</td>
+					<td>
+						{% if reservation.status == 1 %}
+							validée
+						{% elseif reservation.status == 2 %}
+							annulée
+						{% elseif reservation.status == 3 %}
+							en attente
+						{% endif %}
+					</td>
+					<td style="text-align: center;">
+						{{ reservation.appliedPriceTotal ? reservation.appliedPriceTotal ~ ' €' : 'Non déclaré' }}
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+
+
+		<div class="action-buttons">
+			<div>
+				<a href="{{ path('app_client_reservation_edit', {'id': reservation.id}) }}" class="btn btn-edit">Éditer</a>
+			</div>
+
+			<div>
+				<a href="{{path('app_client_reservation_index')}}" class="btn btn-back">
+					<i class="fas fa-arrow-left"></i>
+					Retour à la liste</a>
+			</div>
+		</div>
+	</div>
+
+	{# Affichage du bien #}
+	{% include "components/_detail_card.html.twig" %}
+
+
+{% endblock %}

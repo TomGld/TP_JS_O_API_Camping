@@ -51,4 +51,17 @@ class ReservationRepository extends ServiceEntityRepository
             ->getResult();
         
     }
+    /**
+     * @param $renterId
+     * @return Reservation[]
+     */
+    public function findReservationByRenterId($renterId): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.renter = :renterId')
+            ->setParameter('renterId', $renterId)
+            ->getQuery()
+            ->getResult();
+        
+    }
 }

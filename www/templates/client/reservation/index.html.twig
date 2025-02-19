@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation index{% endblock %}
+
+{% block body %}
+	<h1>Reservations - Accueil</h1>
+	<div class="game-list-container">
+		<table class="game-table">
+			<thead>
+				<tr>
+					<th>Date d'arrivée</th>
+					<th>Date de fin</th>
+					<th>Adulte(s)</th>
+					<th>Mineur(s)</th>
+					<th>Status</th>
+					<th>Prix total</th>
+					<th>actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for reservation in reservations %}
+					<tr>
+						<td>{{ reservation.dateStart ? reservation.dateStart|date('Y-m-d') : '' }}</td>
+						<td>{{ reservation.dateEnd ? reservation.dateEnd|date('Y-m-d') : '' }}</td>
+						<td style="text-align: center;">{{ reservation.nbrAdult }}</td>
+						<td style="text-align: center;">{{ reservation.nbrMinor }}</td>
+						<td>
+							{# Déclaration des constantes des status de la réservation suivant le int en BDD #}
+							<div style="text-align: center;">
+								{% if reservation.status == 1 %}
+									validée
+								{% elseif reservation.status == 2 %}
+									annulée
+								{% elseif reservation.status == 3 %}
+									en attente
+								{% else %}
+									non déclaré
+								{% endif %}
+							</div>
+						</td>
+						<td style="text-align: center;">
+							{{ reservation.appliedPriceTotal ? reservation.appliedPriceTotal ~ ' €': 'Non déclaré' }}
+						</td>
+						<td>
+							<div class="game-actions">
+								<a href="{{ path('app_client_reservation_show', {'id': reservation.id}) }}" class="view-link">Détail</a>
+								<a href="{{ path('app_client_reservation_edit', {'id': reservation.id}) }}" class="edit-link">Éditer</a>
+							</div>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="8">Aucune réservation enregistrée</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="action-buttons">
+			<a href="{{ path('app_home') }}" class="btn btn-back">
+				<i class="fas fa-arrow-left"></i>
+				Retour à l'accueil
+			</a>
+		</div>
+
+	</div>
+{% endblock %}
