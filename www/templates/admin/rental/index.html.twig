@@ -19,6 +19,7 @@
                     <th>Emplacement</th>
                     <th>En ligne</th>
                     <th>Image</th>
+                    <th>Type</th>
                     <th>actions</th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@
                             <img src="{{ asset('camping/location_images/' ~ rental.image) }}" alt="{{ rental.title }}" style="max-width: 150px; max-height: 150px; border-radius: 10px;">
                         </div>
                     </td>
+                    <td>{{rental.typeRental.label}}</td>
                     <td>
                         <div class="game-actions">
                             <a href="{{ path('app_admin_rental_show', {'id': rental.id}) }}" class="view-link">Détail</a>

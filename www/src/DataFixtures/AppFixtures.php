@@ -47,18 +47,18 @@ class AppFixtures extends Fixture
                 'roles' => ['ROLE_ADMIN'],
                 'username' => 'adm',
                 'phone' => '0606060606',
-                'address' => '5 rue de la paix',
+                'address' => '101 rue du non-bug',
             ],
             [
-                'firstname' => 'Corentin',
-                'lastname' => 'Desssapt',
-                'email' => 'corentin.dessapt@corentin.com',
-                'password' => 'corentin123',
+                'firstname' => 'Tom',
+                'lastname' => 'Ford',
+                'email' => 'tom@tom.com',
+                'password' => 'tom1234',
                 'date_of_birth' => '2003-01-01',
                 'roles' => ['ROLE_USER'],
-                'username' => 'corentindessapt',
+                'username' => 'TomF',
                 'phone' => '0707070707',
-                'address' => '9 rue de la Hess',
+                'address' => '9 /10 vers la perfection',
             ],
         ];
 
@@ -132,10 +132,10 @@ class AppFixtures extends Fixture
     {
         $array_types_rental = [
             [
-                'label' => 'tente 1 porte'
+                'label' => 'tente meublée'
             ],
             [
-                'label' => 'tente 45 porte'
+                'label' => 'Emplacement nu'
             ],
             [
                 'label' => 'mobile home'
@@ -158,7 +158,7 @@ class AppFixtures extends Fixture
             [
                 'title' => 'Magnifique mobil home, vue sur la mer',
                 'description' => 'Mobil home 4 places avec vue sur la mer, parfait pour des vacances en famille',
-                'capacity' => 5,
+                'capacity' => 4,
                 'nbr_localization' => 45,
                 'type_rental_id' => 3,
                 'isActive' => 1,
