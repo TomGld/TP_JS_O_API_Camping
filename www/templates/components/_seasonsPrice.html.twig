@@ -33,16 +33,13 @@
         {% endif %}
         
         {# Si admin, afficher le bouton réserver renvoyant vers sa page concernant ce bien là. #}
-        {% if is_granted('ROLE_ADMIN') and not is_granted('ROLE_USER') %}
+        {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('app_admin_reservation_new', {'id': rental.id}) }}" class="btn btn-primary">Créer une réservation pour ce bien</a>
-        {% endif %}
-
-        {% if rental.isActive == 1 %}
-            {% if is_granted('ROLE_USER') %}
-                <a href="{{ path('app_client_reservation_new', {'id': rental.id}) }}" class="btn btn-primary">Créer une réservation pour ce bien</a>
+        {# Sinon, afficher le bouton réserver renvoyant vers la page reservation pour ROLE_USER SI isActive=true #}
+        {% else %}
+            {% if rental.isActive == 1 %}
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_client_reservation_new', {'id': rental.id}) }}" class="btn btn-primary">Créer une réservation pour ce bien</a>
+                {% endif %}
             {% endif %}
         {% endif %}
-        
-                    
-    
-        {# TODO: Si la location est active, alors afficher le bouton de réservation #}

@@ -3,36 +3,37 @@ CREATE TABLE `Type_rental` (
   `label` varchar(255)
 );
 
-CREATE TABLE `user` (
+CREATE TABLE `User` (
   `id` integer PRIMARY KEY,
-  `fistname` varchar(255),
+  `firstname` varchar(255),
   `lastname` varchar(255),
   `email` varchar(255),
   `password` varchar(255),
-  `age` datetime,
+  `date_of_birth` datetime,
   `role` varchar(255),
   `username` varchar(255),
-  `phone` int(11),
+  `phone` varchar(15),
   `address` varchar(255)
 );
 
 CREATE TABLE `Reservation` (
   `id` integer PRIMARY KEY,
-  `id_rental` int,
-  `id_renter` int,
+  `rental_id` int NOT NULL,
+  `renter_id` int NOT NULL,
   `date_start` datetime,
   `date_end` datetime,
   `nbr_adult` int,
   `nbr_minor` int,
   `status` varchar(255),
-  `checked` int
+  `checked` int,
+  `applied_price_total` int
 );
 
-CREATE TABLE `Rate` (
+CREATE TABLE `Price` (
   `id` integer PRIMARY KEY,
-  `id_rental` int,
-  `label` varchar(255),
-  `price` int
+  `rental_id` int NOT NULL,
+  `season_id` int NOT NULL,
+  `price_per_night` int
 );
 
 CREATE TABLE `Season` (
@@ -45,12 +46,12 @@ CREATE TABLE `Season` (
 CREATE TABLE `Rental` (
   `id` integer PRIMARY KEY,
   `title` varchar(255),
-  `description` textarea,
+  `description` text,
   `capacity` int,
-  `nbr_location` int,
-  `id_type_rental` int,
+  `nbr_localization` int,
+  `type_rental_id` int NOT NULL,
   `isActive` int,
-  `equipment` int
+  `image` varchar(255)
 );
 
 CREATE TABLE `Equipment` (
@@ -58,21 +59,21 @@ CREATE TABLE `Equipment` (
   `label` varchar(255)
 );
 
-ALTER TABLE `Rental` ADD FOREIGN KEY (`id_type_rental`) REFERENCES `Type_rental` (`id`);
-
-ALTER TABLE `Rental` ADD FOREIGN KEY (`id`) REFERENCES `Reservation` (`id_rental`);
-
-CREATE TABLE `Rental_Equipment` (
-  `Rental_equipment` int,
-  `Equipment_id` integer,
-  PRIMARY KEY (`Rental_equipment`, `Equipment_id`)
+CREATE TABLE `rental_equipment` (
+  `rental_id` int NOT NULL,
+  `equipment_id` int NOT NULL
 );
 
-ALTER TABLE `Rental_Equipment` ADD FOREIGN KEY (`Rental_equipment`) REFERENCES `Rental` (`equipment`);
+ALTER TABLE `Rental` ADD FOREIGN KEY (`type_rental_id`) REFERENCES `Type_rental` (`id`);
 
-ALTER TABLE `Rental_Equipment` ADD FOREIGN KEY (`Equipment_id`) REFERENCES `Equipment` (`id`);
+ALTER TABLE `Rental` ADD FOREIGN KEY (`id`) REFERENCES `Reservation` (`rental_id`);
 
+ALTER TABLE `User` ADD FOREIGN KEY (`id`) REFERENCES `Reservation` (`renter_id`);
 
-ALTER TABLE `user` ADD FOREIGN KEY (`id`) REFERENCES `Reservation` (`id_renter`);
+ALTER TABLE `Rental` ADD FOREIGN KEY (`id`) REFERENCES `Price` (`rental_id`);
 
-ALTER TABLE `Rental` ADD FOREIGN KEY (`id`) REFERENCES `Rate` (`id_rental`);
+ALTER TABLE `Season` ADD FOREIGN KEY (`id`) REFERENCES `Price` (`season_id`);
+
+ALTER TABLE `rental_equipment` ADD FOREIGN KEY (`equipment_id`) REFERENCES `Equipment` (`id`);
+
+ALTER TABLE `rental_equipment` ADD FOREIGN KEY (`rental_id`) REFERENCES `Rental` (`id`);

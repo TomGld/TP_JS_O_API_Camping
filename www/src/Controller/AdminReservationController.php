@@ -52,7 +52,6 @@ final class AdminReservationController extends AbstractController
     public function index(ReservationRepository $reservationRepository): Response
     {
         return $this->render('admin/reservation/index.html.twig', [
-            // dd($reservationRepository->findAll()),
             'reservations' => $reservationRepository->findAll(),
         ]);
     }
@@ -159,8 +158,7 @@ final class AdminReservationController extends AbstractController
                     return $this->redirectToRoute('app_admin_reservation_new', ['id' => $rentalId]);
                 }
 
-                    
-
+                //Vérifier que les dates de début et de fin ne sont pas déjà réservées
                 $reservations = $reservationRepository->findReservationByRentalId($rentalId);
                 foreach ($reservations as $res) {
                     if ($reservation->getDateStart() >= $res->getDateStart() && $reservation->getDateStart() <= $res->getDateEnd()) {

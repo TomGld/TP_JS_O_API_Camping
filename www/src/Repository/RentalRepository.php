@@ -150,7 +150,6 @@ class RentalRepository extends ServiceEntityRepository
         $results = $query->getResult();
 
 
-
         return $results;
     }
 
