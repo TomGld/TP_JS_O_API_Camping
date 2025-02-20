@@ -18,11 +18,11 @@
 #Puis: source ~/.bashrc
 
 # alias pour installer une librairie composer
-alias ccomposer='docker-compose run --rm $(docker ps --format '{{.Names}}' | grep apache) composer'
+alias ccomposer='docker compose run --rm $(docker ps --format '{{.Names}}' | grep apache) composer'
 # alias pour utiliser le wizard symfony
-alias cconsole='docker-compose run --rm $(docker ps --format '{{.Names}}' | grep apache) symfony console'
+alias cconsole='docker compose run --rm $(docker ps --format '{{.Names}}' | grep apache) symfony console'
 # alias pour entrer dans le container npm
-alias nnpm='docker-compose exec $(docker ps --format '{{.Names}}' | grep apache) bash'
+alias nnpm='docker compose exec $(docker ps --format '{{.Names}}' | grep apache) bash'
 
 
 # alias pour exporter un snap de la base de données
