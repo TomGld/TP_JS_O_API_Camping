@@ -64,4 +64,69 @@ class ReservationRepository extends ServiceEntityRepository
             ->getResult();
         
     }
+
+    //Méthode pour récupérer les réservations avec date_start 
+    public function findReservationStartNow($dateNow): array
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+
+        $query = $qb->select([
+            'r.id',
+            'rt.label as rentalType',
+            'ru.firstname as renterFirstname',
+            'ru.lastname as renterLastname',
+            'r.dateStart',
+            'r.dateEnd',
+            'r.nbrAdult',
+            'r.nbrMinor',
+            'r.checked',
+            'ra.nbrLocalization'
+        ])
+            ->from(Reservation::class, 'r')
+            ->leftJoin('r.rental', 'ra')
+            ->leftJoin('r.renter', 'ru')
+            ->leftJoin('ra.typeRental', 'rt')
+            ->where('r.dateStart = :dateNow')
+            ->setParameter('dateNow', $dateNow)
+            ->getQuery();
+
+            $result = $query->getResult();
+
+        return $result;
+    }
+
+
+    //Méthode pour récupérer les réservations avec date_start 
+    public function findReservationEndNow($dateNow): array
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+
+        $query = $qb->select([
+            'r.id',
+            'ra.id as rentalId',
+            'ru.id as renterId',
+            'ru.firstname as renterFirstname',
+            'ru.lastname as renterLastname',
+            'r.dateStart',
+            'r.dateEnd',
+            'r.nbrAdult',
+            'r.nbrMinor',
+            'r.status',
+            'r.checked',
+            'r.appliedPriceTotal'
+        ])
+            ->from(Reservation::class, 'r')
+            ->leftJoin('r.rental', 'ra')
+            ->leftJoin('r.renter', 'ru')
+            ->where('r.dateEnd = :dateNow')
+            ->setParameter('dateNow', $dateNow)
+            ->getQuery();
+
+        $result = $query->getResult();
+
+        return $result;
+    }
+
 }
